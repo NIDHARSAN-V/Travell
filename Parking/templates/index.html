@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            cursor: crosshair; /* Change cursor to crosshair */
+        }
+        #startTracking {
+            margin-top: 20px;
+            display: none; /* Initially hide the button */
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Stream</h1>
+    
+    <!-- Display the first frame -->
+    <h2>First Frame:</h2>
+    <canvas id="firstFrameCanvas" width="640" height="480"></canvas>
+    
+    <!-- Button to start tracking -->
+    <button id="startTracking">Start Tracking</button>
+
+    <!-- Display the live stream -->
+    <h2>Live Feed:</h2>
+    <img id="liveFeed" width="640" height="480" src="/live_feed">
+
+    <script>
+        const firstFrameCanvas = document.getElementById('firstFrameCanvas');
+        const ctx = firstFrameCanvas.getContext('2d');
+        const startTrackingButton = document.getElementById('startTracking');
+        const selectedPoints = []; // Array to store selected coordinates
+
+        // Function to load and display the first frame
+        function loadFirstFrame() {
+            const img = new Image();
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0, firstFrameCanvas.width, firstFrameCanvas.height);
+            };
+            img.src = '/first_frame';  // Request the first frame from Flask backend
+        }
+
+        // Handle canvas click to select coordinates
+        firstFrameCanvas.addEventListener('click', function(event) {
+            const rect = firstFrameCanvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            // Draw the selected point
+            ctx.fillStyle = 'red';
+            ctx.fillRect(x - 5, y - 5, 10, 10); // Draw a small square as a point
+            selectedPoints.push([x, y]); // Store the coordinates
+
+            // Show the button to start tracking if at least one point is selected
+            startTrackingButton.style.display = 'block';
+        });
+
+        // Function to send selected points to the backend
+        function startTracking() {
+            fetch('/add_box', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ points: selectedPoints })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.status);
+                // Optionally, disable the button after starting tracking
+                startTrackingButton.disabled = true;
+            })
+            .catch((error) => console.error('Error:', error));
+        }
+
+        // Event listener for the start tracking button
+        startTrackingButton.addEventListener('click', startTracking);
+
+        // Call the function to load the first frame on page load
+        window.onload = loadFirstFrame;
+    </script>
+</body>
+</html>
