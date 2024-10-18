@@ -22,7 +22,7 @@ function RegisterScreen() {
   };
 
   const handleSubmit = async function (e) {
-    e.preventDefault(); // Prevent page refresh on form submit
+    e.preventDefault(); 
     console.log(userdata);
     try {
       const res = await axios.post("http://localhost:5432/user/register", userdata);

@@ -1,29 +1,44 @@
-const userModel = require("../../models/usermodel");
-const bcrypt = require("bcrypt")
+const userModel = require("../Models/usermodel");
+const bcrypt = require("bcrypt");
 
 const registerController = async (req, res) => {
-    console.log(req.body)
+    console.log(req.body); // Logging request body for debugging
+
     try {
-        const exisitingUser = await userModel.findOne({ email: req.body.email });
-        if (exisitingUser) {
-            return res
-                .status(200)
-                .send({ message: "User Already Exist", success: false });
+        // Check if user already exists by email
+        const existingUser = await userModel.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.status(409).send({ message: "User Already Exists", success: false });
         }
-        const password = req.body.password;
-        console.log(password)
+
+        // Check if the phone number is already in use
+        const existingPhoneUser = await userModel.findOne({ phone: req.body.phone });
+        if (existingPhoneUser) {
+            return res.status(409).send({ message: "Phone number already in use", success: false });
+        }
+
+        // Hashing the password
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        req.body.password = hashedPassword;
-        req.body.section = "";
-        const newUser = new userModel(req.body);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+        // Create a new user instance with hashed password and section from request body
+        const newUser = new userModel({
+            username: req.body.username, // Explicitly assigning each field for clarity
+            email: req.body.email,
+            phone: req.body.phone,
+            section: req.body.section || "traveler", // Set default section if not provided
+            password: hashedPassword, // Use the hashed password
+            isAdmin: false // Default value for isAdmin
+        });
+
+        // Save the new user to the database
         await newUser.save();
-        res.status(201).send({ message: "Register Sucessfully", success: true });
+        res.status(201).send({ message: "Registered Successfully", success: true });
     } catch (error) {
-        console.log(error);
+        console.error("Registration Error:", error); // Log error for debugging
         res.status(500).send({
             success: false,
-            message: `Register Controller ${error.message}`,
+            message: `Registration Controller: ${error.message}`,
         });
     }
 };

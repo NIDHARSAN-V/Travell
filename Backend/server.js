@@ -1,60 +1,70 @@
 const express = require("express");
-const cors = require("cors")
-const jwt = require("jsonwebtoken")
-// const bcrypt  = require("bcrypt")
-const cookieParser = require("cookie-parser")
-
-
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const orderRouter = require("./routers/order");
+
+// Import routers and database connection
 const userRouter = require("./routers/usersroute");
 const connectDB = require("./config/db");
 const { authmiddle } = require("./middlewares/authmiddleware");
 
-//dotenv conig
+// Load environment variables
 dotenv.config();
 
-//mongodb connection
+// Connect to the database
 connectDB();
 
-//rest obejct
 const app = express();
-// connectDB();
 
-
-//middlewares
+// Middleware setup
 app.use(express.json());
-
+app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:8081',  
-    methods: ['GET', 'POST'],
-    credentials: true
+    origin: 'http://localhost:5173',  
+    methods: '*',
+    credentials: true  // Allow credentials (cookies)
 }));
 
+// Router middleware
+app.use("/user", userRouter);
 
-app.use(cookieParser())
+// Home route with authentication middleware
+app.get("/", authmiddle, async (req, res) => {
+    try {
+        console.log("Home back");
+        res.status(200).send({
+            message: "Entered Home Success",
+            success: true,
+            userid: req.userid
+        });
+    } catch (error) {
+        console.error("Error in home route:", error);
+        res.status(500).send({
+            message: "Internal Server Error",
+            success: false
+        });
+    }
+});
 
-// app.use(moragan("dev"));
+// Logout route
+app.get("/logout", async (req, res) => {
+    try {
+        res.clearCookie('token'); // Clear the token cookie
+        return res.status(200).send({
+            message: "Logged Out",
+            success: true
+        });
+    } catch (error) {
+        console.error("Error during logout:", error);
+        return res.status(500).send({
+            message: "Internal Server Error",
+            success: false
+        });
+    }
+});
 
-
-//router Middleware
-
-app.use("/user" , userRouter)
-
-app.get("/",authmiddle ,async function(req,res)
-{
-    console.log("Home back")
-     res.status(201).send({ message: "Entered Home Success", success: true , userid:req.userid });
-} )
-
-app.get("/logout" , async function(req,res)
-{
-    res.clearCookie('token');
-    return res.status(201).send({message:"Logged Out" , success:true})
-})
-
-//server 
-app.listen(8000 , function()
-{
-    console.log(`Server running in 8000`)
-})
+// Server listening on port 5432
+app.listen(5432, () => {
+    console.log(`Server running on port 5432`);
+});
