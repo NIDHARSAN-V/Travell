@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function LoginScreen() {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
-  const [role, setRole] = useState(''); // Role is either 'Traveler', 'Parking Slot Owner', or 'Hotel Owner'
+  const [role, setRole] = useState(''); // 
   const [selectedLogin, setSelectedLogin] = useState(null); // Determines which login form to show
   const navigate = useNavigate();
 

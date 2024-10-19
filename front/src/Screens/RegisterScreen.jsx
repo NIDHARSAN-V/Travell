@@ -12,6 +12,7 @@ function RegisterScreen() {
   const [password, setpassword] = useState();
   const [confirmpassword, setconfirmpassword] = useState();
 
+  
   const userdata = {
     username,
     email,
@@ -20,6 +21,7 @@ function RegisterScreen() {
     password,
     confirmpassword,
   };
+
 
   const handleSubmit = async function (e) {
     e.preventDefault(); 
