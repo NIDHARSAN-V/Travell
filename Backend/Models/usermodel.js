@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Username is required"],
   },
-  email: {
-    type: String,
+  email: { 
+    type: String, 
     required: [true, "Email is required"],
     unique: true,
   },
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   section: {
     type: String,
     enum: ["traveler", "parking-slot-owner", "hotel-owner"], // Restrict to valid options
-    default: "traveler" // Default to traveler if not specified
+    required: [true, "Section is required"], // Mark section as required
   },
 }, {
   timestamps: true, // Automatically manage createdAt and updatedAt timestamps
@@ -33,4 +33,4 @@ const userSchema = new mongoose.Schema({
 
 const userModel = mongoose.model("User", userSchema); // Changed model name to "User"
 
-module.exports = userModel;
+module.exports = userModel; 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import "../styles/Registerstyle.css";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +26,7 @@ function RegisterScreen() {
     e.preventDefault(); 
     console.log(userdata);
     try {
-      const res = await axios.post("http://localhost:5432/user/register", userdata);
+      const res = await axios.post("http://localhost:8001/user/register", userdata);
       console.log(res.data.message);
     } catch (error) {
       console.log(error);

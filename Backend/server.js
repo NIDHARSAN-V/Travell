@@ -21,22 +21,22 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173/',  
+    origin: 'http://localhost:5173',  
     methods: ['GET','POST'],
     credentials: true  
 }));
 
-// Router middleware
+
 app.use("/user", userRouter);
 
-// Home route with authentication middleware
 app.get("/", authmiddle, async (req, res) => {
     try {
         console.log("Home back");
         res.status(200).send({
             message: "Entered Home Success",
             success: true,
-            userid: req.userid
+            userid: req.userid,
+            section:req.section
         });
     } catch (error) {
         console.error("Error in home route:", error);
@@ -65,6 +65,6 @@ app.get("/logout", async (req, res) => {
 });
 
 // Server listening on port 5432
-app.listen(5432, () => {
-    console.log(`Server running on port 5432`);
+app.listen(8001, () => {
+    console.log(`Server running on port 8001`);
 });

@@ -2,7 +2,9 @@ const userModel = require("../Models/usermodel");
 const bcrypt = require("bcrypt");
 
 const registerController = async (req, res) => {
+    console.log("User Register Data:")
     console.log(req.body); // Logging request body for debugging
+    
 
     try {
         // Check if user already exists by email
