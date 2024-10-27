@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: [true, "Phone number is required"], // Added error message
+    required: [true, "Phone number is required"], 
   },
   isAdmin: {
     type: Boolean,
@@ -24,13 +24,13 @@ const userSchema = new mongoose.Schema({
   },
   section: {
     type: String,
-    enum: ["traveler", "parking-slot-owner", "hotel-owner"], // Restrict to valid options
-    required: [true, "Section is required"], // Mark section as required
+    enum: ["traveler", "parking-slot-owner", "guide"], 
+    required: [true, "Section is required"], 
   },
 }, {
-  timestamps: true, // Automatically manage createdAt and updatedAt timestamps
+  timestamps: true, 
 });
 
-const userModel = mongoose.model("User", userSchema); // Changed model name to "User"
+const userModel = mongoose.model("User", userSchema); 
 
 module.exports = userModel; 

@@ -73,7 +73,7 @@ function RegisterScreen() {
             >
               <option value="traveler">Traveler</option>
               <option value="parking-slot-owner">Parking Slot Owner</option>
-              <option value="hotel-owner">Hotel Owner</option>
+              <option value="guide">Guide</option>
             </select>
           </div>
           <div className="field">

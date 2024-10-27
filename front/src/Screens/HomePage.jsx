@@ -8,6 +8,7 @@ function HomePage() {
   const [Auth, SetAuth] = useState(false);
   const { UpdateUserData } = useContext(UserDataContext); 
   const [Data, SetData] = useState({});
+  const [ProfileComplete, SetProfileComplete] = useState(true); // Track profile completion
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,9 +21,7 @@ function HomePage() {
           SetData(res.data);
           UpdateUserData(res.data.userid, res.data.section); 
           SetAuth(true);
-         
-        }
-         else {
+        } else {
           SetAuth(false);
         }
       } catch (error) {
@@ -32,6 +31,39 @@ function HomePage() {
 
     FetchAuth();
   }, [UpdateUserData]);
+
+
+
+
+
+
+  useEffect(() => {
+    const CheckProfileCompletion = async function () {
+      if (Data.userid) {
+        try {
+          const res = await axios.get(`http://localhost:8001/profile/${Data.userid}`);
+          console.log("Profile Check:", res.data);
+
+          if (!res.data.complete) {
+            SetProfileComplete(false);
+            navigate("/profile"); // Redirect to profile if incomplete
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    if (Auth) {
+      CheckProfileCompletion();
+    }
+  }, [Auth, Data.userid, navigate]);
+
+
+
+
+
+
 
   axios.defaults.withCredentials = true;
 
@@ -45,14 +77,16 @@ function HomePage() {
       console.log(error);
     }
   };
-  const toprofile = function()
-  {
-    navigate("/profile")
+
+  const toProfile = function() {
+    navigate("/profile");
   }
+
+  
 
   return (
     <div className={styles.outer}>
-      <button onClick={toprofile}>Profile</button>
+      <button onClick={toProfile}>Profile</button>
       {Auth ? (
         <div className="homecontainer">
           <header className="home-header">

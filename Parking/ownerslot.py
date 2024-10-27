@@ -1,36 +1,34 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
+import requests
 
-# Load YOLO model
+
 model = YOLO('yolov8s.pt')
 
-# Initialize variables
-boxes = []  # List to store rectangles
-points = []  # Temporarily store points of current rectangle
-colors = []  # Colors for each box
+boxes = []  
+points = []
+colors = []  
 
-# Mouse callback to select points and define boxes
-def select_points(event, x, y, flags, param):
-    global points, boxes, colors
-    if event == cv2.EVENT_LBUTTONDOWN:
+def select_points(event, x, y, flags, param): 
+    global points, boxes, colors 
+    if event == cv2.EVENT_LBUTTONDOWN: 
         points.append((x, y))
         print(f"Point clicked: {x}, {y}")
         
-        if len(points) == 4:  # 4 points to define the box
+        if len(points) == 4:  
             boxes.append(points.copy())
-            colors.append((0, 255, 0))  # Start with green for each box
+            colors.append((0, 255, 0))  
             print(f"Rectangle added: {points}")
-            points = []  # Reset points for the next rectangle
+            points = []  
 
-# Function to check if a click is inside a rectangle
 def is_inside_box(x, y, box):
     x_coords = [pt[0] for pt in box]
     y_coords = [pt[1] for pt in box]
     return min(x_coords) < x < max(x_coords) and min(y_coords) < y < max(y_coords)
 
-# Video input
-video_path = 'video.mp4'  # Path to video file
+# Load video
+video_path = 'video.mp4'  
 cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
@@ -48,18 +46,20 @@ cv2.namedWindow('RGB')
 cv2.setMouseCallback('RGB', select_points)
 
 while True:
+    # Draw each box with its current color and index
     for i, box in enumerate(boxes):
-        # Draw each box with its current color
         cv2.polylines(frame, [np.array(box)], isClosed=True, color=colors[i], thickness=2)
+        
+        # Get the top-left corner of the box to place the index text
+        top_left = tuple(box[0])
+        cv2.putText(frame, str(i + 1), top_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
     if len(points) > 0:
-        # If drawing a box, show it with a temporary color (blue)
+        # Show temporary box while drawing
         cv2.polylines(frame, [np.array(points)], isClosed=True, color=(255, 0, 0), thickness=2)
 
-    # Display the frame
     cv2.imshow('RGB', frame)
 
-    # Exit on pressing 'q'
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
@@ -71,7 +71,6 @@ if len(boxes) > 0:
     for i, box in enumerate(boxes):
         print(f"Rectangle {i + 1}: {box}")
 
-# Video processing with detection and color change logic
 cap = cv2.VideoCapture(video_path)
 
 while True:
@@ -80,11 +79,10 @@ while True:
         break
 
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
     results = model(rgb_frame)
 
     if isinstance(results, list) and len(results) > 0:
-        detections = results[0]  # Get first result if model returns multiple
+        detections = results[0]  
     else:
         continue
 
@@ -92,35 +90,41 @@ while True:
 
     for result in detections.boxes.data.tolist():
         x1, y1, x2, y2, conf, cls = result
-        if int(cls) == 2:  # Class 2 for 'car'
+        if int(cls) == 2: 
             detected_cars.add((int(x1), int(y1), int(x2), int(y2)))
 
     for idx, box in enumerate(boxes):
-        color = colors[idx]  # Get the color of the box
-
+        color = colors[idx] 
         box_polygon = np.array(box)
+
         for (dx1, dy1, dx2, dy2) in detected_cars:
             if (box_polygon[0][0] < dx2 and box_polygon[2][0] > dx1 and
                 box_polygon[0][1] < dy2 and box_polygon[2][1] > dy1):
-                color = (0, 0, 255)  # Red if a car is detected in the box
+                color = (0, 0, 255)  # Change color to red if a car is detected
                 break
 
-        # Update the rectangle color if a car is detected
         cv2.polylines(frame, [box_polygon], isClosed=True, color=color, thickness=2)
 
-        detection_status = "NOT FREE SLOT" if color == (0, 0, 255) else "FREE SLOT"
-        print(f"Area {idx + 1}: {detection_status}")
+        # Display only the index of the box
+        top_left = tuple(box[0])
+        cv2.putText(frame, str(idx + 1), top_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
     cv2.imshow('RGB', frame)
 
-    # Check if the user clicks on any of the rectangles
     def on_click(event, x, y, flags, param):
         global colors
         if event == cv2.EVENT_LBUTTONDOWN:
             for i, box in enumerate(boxes):
                 if is_inside_box(x, y, box):
-                    colors[i] = (0, 255, 255)  
-
+                    try:
+                        res = requests.get("http://localhost:6000/park_payment")
+                        if res.status_code == 200:
+                            print("PARKED IN OWNER_SLOT")
+                            colors[i] = (0, 255, 255)  
+                            cv2.putText(frame, str(i + 1), tuple(box[0]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+                    except requests.exceptions.RequestException as e:
+                        print("Error in Payment")
+                    
     cv2.setMouseCallback('RGB', on_click)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 const userRouter = require("./routers/usersroute");
 const connectDB = require("./config/db");
 const { authmiddle } = require("./middlewares/authmiddleware");
+const ProfileRoute = require("./routers/ProfileRoute");
 
 // Load environment variables
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(cors({
 
 
 app.use("/user", userRouter);
+app.use("/profile" ,ProfileRoute )
 
 app.get("/", authmiddle, async (req, res) => {
     try {
