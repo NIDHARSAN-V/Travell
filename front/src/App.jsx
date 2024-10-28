@@ -11,6 +11,7 @@ import GuideVerify from './Screens/GuideVerify';
 import TravelerProfileScreen from './Screens/TravelerProfileScreen';
 import ParkingStream from './Components/ParkingStream';
 import UsersProfile from './Screens/UsersProfile';
+// import MapRadius from './Screens/MapRadius';
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
           <Route path="/traveler_profile" element={<TravelerProfileScreen/>} /> 
 
           <Route path="/parking_stream" element={<ParkingStream/>} /> 
+           
+           {/* <Route path="/map_radius" element={<MapRadius/>}/> */}
 
         
         </Routes>
