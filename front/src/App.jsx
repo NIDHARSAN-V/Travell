@@ -11,41 +11,45 @@ import GuideVerify from './Screens/GuideVerify';
 import TravelerProfileScreen from './Screens/TravelerProfileScreen';
 import ParkingStream from './Components/ParkingStream';
 import UsersProfile from './Screens/UsersProfile';
+import GuideVerification from './Screens/GuideVerification';
 // import MapRadius from './Screens/MapRadius';
 
 function App() {
   return (
 
-    <UserDataProvider>
+    // <UserDataProvider>
 
-      <Navbar/>
+    //   <Navbar/>
 
-      <BrowserRouter>
+    //   <BrowserRouter>
 
-        <Routes>
+    //     <Routes>
 
-          <Route path="/" element={<HomePage />} /> 
+    //       <Route path="/" element={<HomePage />} /> 
           
-          <Route path="/register" element={<RegisterScreen />} /> 
+    //       <Route path="/register" element={<RegisterScreen />} /> 
 
-          <Route path="/login" element={<LoginScreen />} />
+    //       <Route path="/login" element={<LoginScreen />} />
 
-          <Route path="/profile" element={<UsersProfile/>} /> 
+    //       <Route path="/profile" element={<UsersProfile/>} /> 
 
-          <Route path="/guide" element={<GuideVerify/>} /> 
+    //       <Route path="/guide" element={<GuideVerify/>} /> 
 
-          <Route path="/traveler_profile" element={<TravelerProfileScreen/>} /> 
+    //       <Route path="/traveler_profile" element={<TravelerProfileScreen/>} /> 
 
-          <Route path="/parking_stream" element={<ParkingStream/>} /> 
+    //       <Route path="/parking_stream" element={<ParkingStream/>} /> 
            
-           {/* <Route path="/map_radius" element={<MapRadius/>}/> */}
+    //        {/* <Route path="/map_radius" element={<MapRadius/>}/> */}
 
         
-        </Routes>
+    //     </Routes>
 
-      </BrowserRouter>
+    //   </BrowserRouter>
 
-    </UserDataProvider>
+    // </UserDataProvider>
+    <>
+    <GuideVerification/>
+    </>
   );
 }
 
