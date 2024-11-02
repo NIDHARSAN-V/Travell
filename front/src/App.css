@@ -1,0 +1,123 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    color: #333; /* Dark gray text for readability */
+    background-color: #f8f9fa; /* Light background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #212529;
+    margin-bottom: 10px;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Primary blue */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.button.secondary {
+    background-color: #6c757d; /* Secondary gray */
+}
+
+.button.secondary:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #495057;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: #80bdff;
+    outline: none;
+}
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #343a40;
+}
+
+.card-content {
+    color: #495057;
+}
+
+/* Nav */
+.nav {
+    display: flex;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 10px 20px;
+}
+
+.nav-item {
+    margin-right: 15px;
+    color: #343a40;
+    font-weight: bold;
+}
+
+.nav-item:hover {
+    color: #007bff;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f1f1f1;
+    color: #6c757d;
+    font-size: 0.9rem;
+    border-top: 1px solid #dee2e6;
+}

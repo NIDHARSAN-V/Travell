@@ -1,4 +1,0 @@
-//Seperate model for guide
-
-
-

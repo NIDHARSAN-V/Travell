@@ -9,7 +9,7 @@ import Navbar from './Components/Navbar';
 import "./App.css"
 import GuideVerify from './Screens/GuideVerify';
 import TravelerProfileScreen from './Screens/TravelerProfileScreen';
-import ParkingStream from './Components/ParkingStream';
+import ParkingStream from './Screens/ParkingStream';
 import UsersProfile from './Screens/UsersProfile';
 import GuideVerification from './Screens/GuideVerification';
 // import MapRadius from './Screens/MapRadius';

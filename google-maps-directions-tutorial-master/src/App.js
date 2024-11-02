@@ -37,7 +37,7 @@ function App() {
   const destinationRef = useRef();
 
   const fetchFamousPlaces = useCallback(async (lat, lng, radius) => {
-    if (!window.google) return; // Ensure google is loaded
+    if (!window.google) return; 
 
     const service = new window.google.maps.places.PlacesService(map);
     const request = {

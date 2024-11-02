@@ -26,22 +26,22 @@ const ParkingStream = () => {
   };
 
  
-  const onToken = (token) => {
-    fetch('/save-stripe-token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(token),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert(`Payment Successful! We are in business, ${data.email}`);
-      })
-      .catch((error) => {
-        console.error('Payment error:', error);
-      });
-  };
+
+  async function onToken(token) {
+    try {
+      const response = await axios.post('/save-stripe-token', token);
+      const data = response.data;
+      console.log(data);
+      
+     
+      const res = await axios.post('http://localhost:8001/save_payment_traveler');
+      
+      alert(`Payment Successful! We are in business, ${data.email}`);
+    } catch (error) {
+      console.error('Payment error:', error);
+    }
+  }
+  
 
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
