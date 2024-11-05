@@ -1,18 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
-import RegisterScreen from './Screens/RegisterScreen';
-import LoginScreen from './Screens/LoginScreen';
-import HomePage from './Screens/HomePage'; 
-import ProfileScreen from './Screens/ProfileScreen'; 
-import { UserDataProvider } from './UserContext/UserDataContext'; 
-import Navbar from './Components/Navbar';
 import "./App.css"
-import GuideVerify from './Screens/GuideVerify';
-import TravelerProfileScreen from './Screens/TravelerProfileScreen';
 import ParkingStream from './Screens/ParkingStream';
-import UsersProfile from './Screens/UsersProfile';
-import GuideVerification from './Screens/GuideVerification';
-// import MapRadius from './Screens/MapRadius';
+
+
 
 function App() {
   return (
@@ -33,7 +24,7 @@ function App() {
 
     //       <Route path="/profile" element={<UsersProfile/>} /> 
 
-    //       <Route path="/guide" element={<GuideVerify/>} /> 
+    //       <Route path="/guide" element={<GuideVerification/>} /> 
 
     //       <Route path="/traveler_profile" element={<TravelerProfileScreen/>} /> 
 
@@ -48,8 +39,9 @@ function App() {
 
     // </UserDataProvider>
     <>
-    <GuideVerification/>
+    <ParkingStream/>
     </>
+    
   );
 }
 

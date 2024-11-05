@@ -17,7 +17,7 @@ const guideSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: [true, "Phone number is required"], // Added error message
+    required: [true, "Phone number is required"], 
   },
   location: {
     type: String,

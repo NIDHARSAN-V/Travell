@@ -19,6 +19,9 @@ import {
   Circle,
 } from '@react-google-maps/api';
 import { useRef, useState, useEffect, useCallback } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
+import axios from 'axios';
 
 function App() {
   const { isLoaded } = useJsApiLoader({
@@ -32,17 +35,21 @@ function App() {
   const [duration, setDuration] = useState('');
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [famousPlaces, setFamousPlaces] = useState([]);
-  const [radius, setRadius] = useState(1); // Default radius in kilometers (1 km)
+  const [radius, setRadius] = useState(1);
+  
+  // New state for hovered place details
+  const [hoveredPlace, setHoveredPlace] = useState(null);
+  const [travel_advice , setTravelAdvice] = useState("");
 
   const destinationRef = useRef();
 
   const fetchFamousPlaces = useCallback(async (lat, lng, radius) => {
-    if (!window.google) return; 
+    if (!window.google) return;
 
     const service = new window.google.maps.places.PlacesService(map);
     const request = {
       location: new window.google.maps.LatLng(lat, lng),
-      radius: radius * 1000, // Convert kilometers to meters
+      radius: radius * 1000,
       type: ['tourist_attraction'],
     };
 
@@ -52,8 +59,45 @@ function App() {
       } else {
         console.error('Error fetching famous places:', status);
       }
+      console.log('Famous Places:');
+      results.forEach(place => {
+        console.log(`Name: ${place.name}`);
+        console.log(`Rating: ${place.rating} (${place.user_ratings_total} ratings)`);
+        console.log(`Status: ${place.business_status}`);
+        console.log(`Vicinity: ${place.vicinity}`);
+        console.log(`Location: (${place.geometry.location.lat()}, ${place.geometry.location.lng()})`);
+        console.log(`Open Now: ${place.opening_hours?.open_now ? 'Yes' : 'No'}`);
+        if (place.photos && place.photos.length > 0) {
+          console.log(`Photo URL: ${place.photos[0].html_attributions[0]}`);
+        }
+        console.log('--------------------------------');
+      });
     });
   }, [map]);
+
+  useEffect(() => {
+    if (map && center.lat !== 0 && center.lng !== 0) {
+      map.data.loadGeoJson('/india.geojson'); // Load GeoJSON with district borders
+  
+      map.data.setStyle((feature) => {
+        const geometry = feature.getGeometry();
+        if (geometry.getType() === 'Polygon' || geometry.getType() === 'MultiPolygon') {
+          return {
+            fillColor: '#90EE90',  // Light green color
+            fillOpacity: 0.05,
+            strokeColor: '#000000',
+            strokeWeight: 2,
+          };
+        }
+        return {
+          fillColor: '#FFFFFF',
+          fillOpacity: 0.1,
+          strokeColor: '#000000',
+          strokeWeight: 1,
+        };
+      });
+    }
+  }, [map, center, radius]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -61,7 +105,7 @@ function App() {
         (position) => {
           const { latitude, longitude } = position.coords;
           setCenter({ lat: latitude, lng: longitude });
-          fetchFamousPlaces(latitude, longitude, radius); // Fetch places with the default radius
+          fetchFamousPlaces(latitude, longitude, radius);
         },
         () => {
           console.error("Geolocation access denied or not available.");
@@ -69,12 +113,6 @@ function App() {
       );
     }
   }, [fetchFamousPlaces, radius]);
-
-  useEffect(() => {
-    if (center.lat !== 0 && center.lng !== 0) {
-      fetchFamousPlaces(center.lat, center.lng, radius); // Fetch places whenever the radius changes
-    }
-  }, [fetchFamousPlaces, center, radius]);
 
   if (!isLoaded) {
     return <SkeletonText />;
@@ -111,7 +149,97 @@ function App() {
     setDistance('');
     setDuration('');
     destinationRef.current.value = '';
+    setHoveredPlace(null); 
   }
+
+
+  const handleSearch = async (place) => { 
+    try { 
+      console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH :  " , place.name)
+      const response = await axios.post(
+        'https://scrape.serper.dev/', 
+        { 
+          url: `https://www.timeanddate.com/weather/india/erode/`,
+        },
+        {
+          headers: {
+             'X-API-KEY': 'bcfca4c91744792eafc730ddacf277909e7655cc',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log("waether infooooooooooooooooooooooooooooooooooooooooooooo")
+      const weatherInfo = parseWeatherData(response.data.text);
+      // setWeatherData(weatherInfo); 
+      // setError('');
+      console.log(weatherInfo)
+      // Send weather data to the Express API
+      const travelResponse = await axios.post('http://localhost:8001/features/weather_info', { weatherData: weatherInfo });
+      console.log(travelResponse.data)
+      setTravelAdvice(travelResponse.data); 
+    } catch (err) {
+      // setError('Failed to fetch weather data. Please try again.');
+      console.log(err)
+    }
+  };
+
+
+
+
+
+  const parseWeatherData = (text) => {
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+
+    const weatherInfo = {
+      title: lines[0],
+      currentTemp: lines[1].replace('Now', '').trim(),
+      condition: lines[2],
+      feelsLike: '',
+      forecast: '',
+      wind: '',
+      location: '',
+      time: '',
+      reportTime: '',
+      visibility: '',
+      pressure: '',
+      humidity: '',
+      dewPoint: '',
+      nearbyStations: [],
+    };
+
+    lines.forEach((line, index) => {
+      if (line.startsWith('Feels Like:')) {
+        weatherInfo.feelsLike = line.replace('Feels Like:', '').trim();
+      } else if (line.startsWith('Forecast:')) {
+        weatherInfo.forecast = line.replace('Forecast:', '').trim();
+      } else if (line.startsWith('Wind:')) {
+        weatherInfo.wind = line.replace('Wind:', '').trim();
+      } else if (line.startsWith('Location:')) {
+        weatherInfo.location = line.replace('Location:', '').trim();
+      } else if (line.startsWith('Current Time:')) {
+        weatherInfo.time = line.replace('Current Time:', '').trim();
+      } else if (line.startsWith('Latest Report:')) {
+        weatherInfo.reportTime = line.replace('Latest Report:', '').trim();
+      } else if (line.startsWith('Visibility:')) {
+        weatherInfo.visibility = line.replace('Visibility:', '').trim();
+      } else if (line.startsWith('Pressure:')) {
+        weatherInfo.pressure = line.replace('Pressure:', '').trim();
+      } else if (line.startsWith('Humidity:')) {
+        weatherInfo.humidity = line.replace('Humidity:', '').trim();
+      } else if (line.startsWith('Dew Point:')) {
+        weatherInfo.dewPoint = line.replace('Dew Point:', '').trim();
+      } else if (line.includes('Currently at nearby stations')) {
+        weatherInfo.nearbyStations = lines.slice(index + 1);
+      }
+    });
+
+    return weatherInfo;
+  };
+
+
+
+
 
   return (
     <Flex
@@ -134,18 +262,16 @@ function App() {
           }}
           onLoad={map => setMap(map)}
         >
-          {/* User's location marker with a green color */}
           <Marker
             position={center}
             icon={{
-              url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Green marker icon
-              scaledSize: new window.google.maps.Size(30, 30), // Scale size of the marker
+              url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", 
+              scaledSize: new window.google.maps.Size(30, 30), 
             }}
           />
           {directionsResponse && (
             <DirectionsRenderer directions={directionsResponse} />
           )}
-          {/* Render famous places as markers */}
           {famousPlaces.map((place) => (
             <Marker
               key={place.place_id}
@@ -155,15 +281,25 @@ function App() {
               }}
               title={place.name}
               onClick={() => {
-                destinationRef.current.value = place.name; // Set the destination to the place name
-                calculateRoute(); // Calculate the route to this place
+                destinationRef.current.value = place.name;
+                calculateRoute();
               }}
+              onMouseOver={
+                
+                () => {
+                  setHoveredPlace(place)
+                  handleSearch(place)
+                }
+
+              }
+              onMouseOut={
+                () => setHoveredPlace(null)
+              } // Clear hovered place on mouse out
             />
           ))}
-          {/* Draw a circle around the user's location based on the input radius */}
           <Circle
             center={center}
-            radius={radius * 1000} // Convert kilometers to meters
+            radius={radius * 1000}
             options={{
               strokeColor: '#FF0000',
               strokeOpacity: 0.8,
@@ -200,7 +336,7 @@ function App() {
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
             min={0}
-            max={50} // Set a maximum radius if needed
+            max={50}
           />
           <ButtonGroup>
             <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
@@ -226,6 +362,30 @@ function App() {
             }}
           />
         </HStack>
+        {hoveredPlace && ( // Display hovered place details
+          <Box 
+          mt={4} 
+          p={4} 
+          border='1px' 
+          borderColor='gray.200' 
+          borderRadius='md' 
+          sx={{ zIndex: -100 }} // Set z-index to -100
+        >
+            <Text fontWeight='bold'>{hoveredPlace.name}</Text>
+            <Text>Rating: {hoveredPlace.rating} ({hoveredPlace.user_ratings_total} ratings)</Text>
+            <Text>Vicinity: {hoveredPlace.vicinity}</Text>
+            <Text>Open Now: {hoveredPlace.opening_hours?.open_now ? 'Yes' : 'No'}</Text>
+        
+            <Text> 
+              <h1>Travel Advice:</h1> 
+              <br /> 
+              <br />
+              <br />
+              <h3>{travel_advice}</h3>
+            </Text> 
+        </Box>
+        
+        )}
       </Box>
     </Flex>
   );

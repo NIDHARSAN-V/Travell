@@ -1,12 +1,11 @@
-import {
-  Box,
+import { 
+  Box, 
   Button,
-  ButtonGroup,
   Flex,
   HStack,
-  IconButton,
-  Input,
-  SkeletonText,
+  IconButton, 
+  Input, 
+  SkeletonText, 
   Text,
 } from '@chakra-ui/react';
 import { FaLocationArrow, FaTimes } from 'react-icons/fa';
@@ -49,6 +48,7 @@ function MapRadius() {
     service.nearbySearch(request, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         setFamousPlaces(results);
+        
       } else {
         console.error('Error fetching famous places:', status);
       }
@@ -202,8 +202,8 @@ function MapRadius() {
             min={0}
             max={50} // Set a maximum radius if needed
           />
-          <ButtonGroup>
-            <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
+          <HStack spacing={2}>
+            <Button colorScheme='pink' onClick={calculateRoute}>
               Calculate Route
             </Button>
             <IconButton
@@ -211,7 +211,7 @@ function MapRadius() {
               icon={<FaTimes />}
               onClick={clearRoute}
             />
-          </ButtonGroup>
+          </HStack>
         </HStack>
         <HStack spacing={4} mt={4} justifyContent='space-between'>
           <Text>Distance: {distance}</Text>
@@ -227,8 +227,8 @@ function MapRadius() {
           />
         </HStack>
       </Box>
-    </Flex>
-  );
-}
+    </Flex> 
+  );  
+}  
 
-export default MapRadius;
+export default MapRadius; 
