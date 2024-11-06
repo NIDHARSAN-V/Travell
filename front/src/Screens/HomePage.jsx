@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserDataContext } from '../UserContext/UserDataContext'; 
+import { UserDataContext } from '../UserContext/UserDataContext';
 import styles from '../Styles/HomePage.module.css';
 
 function HomePage() {
   const [Auth, SetAuth] = useState(false);
-  const { UpdateUserData } = useContext(UserDataContext); 
+  const { UpdateUserData } = useContext(UserDataContext);
   const [Data, SetData] = useState({});
   const [ProfileComplete, SetProfileComplete] = useState(true); // Track profile completion
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function HomePage() {
 
         if (res.data.success) {
           SetData(res.data);
-          UpdateUserData(res.data.userid, res.data.section); 
+          UpdateUserData(res.data.userid, res.data.section);
           SetAuth(true);
         } else {
           SetAuth(false);
@@ -31,11 +31,6 @@ function HomePage() {
 
     FetchAuth();
   }, [UpdateUserData]);
-
-
-
-
-
 
   useEffect(() => {
     const CheckProfileCompletion = async function () {
@@ -59,12 +54,6 @@ function HomePage() {
     }
   }, [Auth, Data.userid, navigate]);
 
-
-
-
-
-
-
   axios.defaults.withCredentials = true;
 
   const handleLogout = async function () {
@@ -82,7 +71,18 @@ function HomePage() {
     navigate("/profile");
   }
 
-  
+  const additionalButtonHandler = async function() {
+    try{
+        ///check auth 
+
+        
+        
+    }
+    catch(error)
+    {
+      console.log(error)
+    }
+  };
 
   return (
     <div className={styles.outer}>
@@ -107,6 +107,8 @@ function HomePage() {
           <Link to="/login" className="login-link">Login</Link>
         </div>
       )}
+      {/* New Button at the end */}
+      <button onClick={additionalButtonHandler} className="additional-button">Additional Button</button>
     </div>
   );
 }

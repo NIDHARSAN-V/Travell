@@ -1,46 +1,51 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
-import "./App.css"
-import ParkingStream from './Screens/ParkingStream';
+
+import HomePage from './Screens/HomePage';
+import { UserDataProvider } from './UserContext/UserDataContext';
+import Navbar from './Components/Navbar';
+import RegisterScreen from './Screens/RegisterScreen';
+import LoginScreen from './Screens/LoginScreen';
+import UsersProfile from './Screens/UsersProfile'
+
+
 
 
 
 function App() {
   return (
 
-    // <UserDataProvider>
+    <UserDataProvider>
 
-    //   <Navbar/>
+      <Navbar/>
 
-    //   <BrowserRouter>
+      <BrowserRouter>
 
-    //     <Routes>
+        <Routes>
 
-    //       <Route path="/" element={<HomePage />} /> 
+          <Route path="/" element={<HomePage />} /> 
           
-    //       <Route path="/register" element={<RegisterScreen />} /> 
+          <Route path="/register" element={<RegisterScreen />} /> 
 
-    //       <Route path="/login" element={<LoginScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
 
-    //       <Route path="/profile" element={<UsersProfile/>} /> 
+          <Route path="/profile" element={<UsersProfile/>} /> 
 
-    //       <Route path="/guide" element={<GuideVerification/>} /> 
+          {/* <Route path="/guide" element={<GuideVerification/>} /> 
 
-    //       <Route path="/traveler_profile" element={<TravelerProfileScreen/>} /> 
+          <Route path="/traveler_profile" element={<TravelerProfileScreen/>} /> 
 
-    //       <Route path="/parking_stream" element={<ParkingStream/>} /> 
+          <Route path="/parking_stream" element={<ParkingStream/>} />  */}
            
-    //        {/* <Route path="/map_radius" element={<MapRadius/>}/> */}
+           {/* <Route path="/map_radius" element={<MapRadius/>}/> */}
 
         
-    //     </Routes>
+        </Routes>
 
-    //   </BrowserRouter>
+      </BrowserRouter>
 
-    // </UserDataProvider>
-    <>
-    <ParkingStream/>
-    </>
+    </UserDataProvider>
+    
     
   );
 }

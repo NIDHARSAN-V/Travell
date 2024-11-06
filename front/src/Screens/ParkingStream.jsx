@@ -32,7 +32,7 @@ const ParkingStream = () => {
       const response = await axios.post('/save-stripe-token', token);
       const data = response.data;
       console.log(data);
-      
+      console.log(data)
      
       const res = await axios.post('http://localhost:8001/save_payment_traveler');
       
