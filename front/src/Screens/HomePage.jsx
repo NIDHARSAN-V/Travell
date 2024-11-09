@@ -67,33 +67,21 @@ function HomePage() {
     }
   };
 
-  const toProfile = function() {
-    navigate("/profile");
-  }
-
-  const additionalButtonHandler = async function() {
-    try{
-        ///check auth 
-
-        
-        
-    }
-    catch(error)
-    {
-      console.log(error)
-    }
+  const navigateTo = (path) => {
+    navigate(path);
   };
 
   return (
     <div className={styles.outer}>
-      <button onClick={toProfile}>Profile</button>
+      <button onClick={() => navigateTo("/profile")}>Profile</button>
+      <button onClick={() => navigateTo("/guide_list")} className={styles.guideListButton}>Guide List</button>
       {Auth ? (
-        <div className="homecontainer">
-          <header className="home-header">
+        <div className={styles.homecontainer}>
+          <header className={styles.homeHeader}>
             <h1>Welcome to Traveler</h1>
-            <button className="logout-button" onClick={handleLogout}>Logout</button>
+            <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
           </header>
-          <main className="home-main">
+          <main className={styles.homeMain}>
             <p>We are glad to have you here. Explore our services and offerings.</p>
           </main>
           <p>{Data.message}</p>
@@ -101,14 +89,29 @@ function HomePage() {
           <p>{Data.section}</p>
         </div>
       ) : (
-        <div className="not-authorized-container">
+        <div className={styles.notAuthorizedContainer}>
           <h1>You Are Not Authorized to the Home Page</h1>
-          <p className="no-way-home">NO WAY HOME</p>
-          <Link to="/login" className="login-link">Login</Link>
+          <p className={styles.noWayHome}>NO WAY HOME</p>
+          <Link to="/login" className={styles.loginLink}>Login</Link>
         </div>
       )}
-      {/* New Button at the end */}
-      <button onClick={additionalButtonHandler} className="additional-button">Additional Button</button>
+
+      {/* Navigation buttons for each route */}
+      <div className={styles.navigationButtons}>
+       
+        
+        <button onClick={() => navigateTo("/park")}>Parking Stream</button>
+       
+      
+     
+        <button onClick={() => navigateTo("/hospital")}>Hospital Near</button>
+        
+        <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
+        <button onClick={() => navigateTo("/location_info")}>Location Info</button>
+        <button onClick={() => navigateTo("/ev")}>EV Station</button>
+      </div>
+
+      <button className={styles.getStartedButton}>Get Started</button>
     </div>
   );
 }

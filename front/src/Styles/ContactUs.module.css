@@ -1,0 +1,78 @@
+.contactContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 2rem auto;
+  }
+  
+  .contactTitle {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .contactSubtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .contactForm {
+    width: 100%;
+  }
+  
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.2rem;
+  }
+  
+  .label {
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 0.3rem;
+  }
+  
+  .inputField, .textArea {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+  }
+  
+  .inputField:focus, .textArea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  .textArea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .submitButton {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  

@@ -10,6 +10,9 @@ const connectDB = require("./config/db");
 const { authmiddle } = require("./middlewares/authmiddleware");
 const ProfileRoute = require("./routers/ProfileRoute");
 const FeatureRouter = require("./routers/FeatureRoute");
+const ParkingRouter = require("./routers/Parking_Route");
+const TravelerRouter = require("./routers/TravelerRoute");
+const GuideRouter = require("./routers/GuideRoute");
 
 // Load environment variables
 dotenv.config();
@@ -23,7 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173',  
+    origin: '*',  
     methods: ['GET','POST'],
     credentials: true  
 }));
@@ -32,6 +35,10 @@ app.use(cors({
 app.use("/user", userRouter);
 app.use("/profile" ,ProfileRoute )
 app.use("/features" , FeatureRouter)
+app.use("/parking", ParkingRouter)
+app.use("/traveler" ,TravelerRouter)
+app.use("/guide" , GuideRouter)
+
 
 app.get("/", authmiddle, async (req, res) => {
     try {

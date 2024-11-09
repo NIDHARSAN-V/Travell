@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const App = () => {
+const LocationInfo = () => {
   const [place, setPlace] = useState('');
   const [weatherData, setWeatherData] = useState(null); 
   const [travelAdvice, setTravelAdvice] = useState(''); 
@@ -149,4 +149,4 @@ const styles = {
   }, 
 }; 
 
-export default App;
+export default LocationInfo;

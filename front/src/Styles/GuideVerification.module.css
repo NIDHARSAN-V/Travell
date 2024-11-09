@@ -1,0 +1,118 @@
+/* GuideVerification.module.css */
+
+/* Global Styles */
+.container {
+    padding: 20px;
+    background-color: #ffffff;
+    min-height: 100vh;
+  }
+  
+  /* Location Access Styles */
+  .locationContainer {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .locationHeader {
+    color: #333;
+    font-size: 1.5rem;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .locationButton {
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .locationButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .locationDetails {
+    margin-top: 15px;
+  }
+  
+  .locationDetails p {
+    color: #555;
+  }
+  
+  .errorText {
+    color: red;
+  }
+  
+  /* Map Styles */
+  .mapContainer {
+    width: 100%;
+    height: 400px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Guide Verify Styles */
+  .guideVerifyContainer {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .guideVerifyHeader {
+    color: #333;
+    font-size: 1.5rem;
+  }
+  
+  .videoContainer {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .captureButton,
+  .startButton {
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .captureButton {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .captureButton:hover {
+    background-color: #218838;
+  }
+  
+  .startButton {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .startButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .matchResult {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+  }
+  
+  .matchError {
+    margin-top: 15px;
+    color: red;
+    font-weight: bold;
+  }
+  

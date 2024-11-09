@@ -28,9 +28,7 @@ const travelerSchema = new mongoose.Schema({
     guide_payments: [{
         type: Number, 
     }],
-    parking_payments: [{
-        type: Number, 
-    }],
+    parking_payments: [{}],
     plans_history: [{
         type: String, 
     }],

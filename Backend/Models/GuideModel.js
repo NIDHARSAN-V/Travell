@@ -4,10 +4,10 @@ const guideSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'users',
-  },
-  name: {
-    type: String,
+    ref: 'users', 
+  }, 
+  name: { 
+    type: String, 
     required: [true, "Name is required"],
   },
   email: {
@@ -23,7 +23,6 @@ const guideSchema = new mongoose.Schema({
     type: String,
     required: [true, "Location is required"],
   },
-
   ratings: {
     type: Number,
     min: 0,
@@ -33,7 +32,7 @@ const guideSchema = new mongoose.Schema({
   reviews: [{
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'users', // Reference to the User model
+      ref: 'users',
     },
     reviewText: {
       type: String,
@@ -43,6 +42,16 @@ const guideSchema = new mongoose.Schema({
       default: Date.now,
     },
   }],
+  bookings: [{
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users', // Reference to the user who made the booking
+    },
+    date: {
+      type: Date,
+      required: true, // Date of the booking
+    },
+  }],
 }, {
   timestamps: true, 
 });
@@ -50,9 +59,3 @@ const guideSchema = new mongoose.Schema({
 const guideModel = mongoose.model("Guide", guideSchema); 
 
 module.exports = guideModel;
-
-
-///other than that i need to verify certificate , profile pic , live_location , others needed to
-
-
-

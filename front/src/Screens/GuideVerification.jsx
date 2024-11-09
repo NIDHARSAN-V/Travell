@@ -197,7 +197,7 @@ const GuideVerify = () => {
 
   const verifyFace = async (imageData) => {
     try {
-      const response = await axios.post("http://localhost:5000/verify", {
+      const response = await axios.post("http://localhost:5010/verify", {
         image: imageData,
       });
       setMatchResult(response.data.message);

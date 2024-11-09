@@ -1,0 +1,80 @@
+/* AboutUs Page Dark Theme Styling */
+
+.container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text */
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .title {
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+  }
+  
+  .subtitle {
+    font-size: 28px;
+    color: #1e88e5;
+    margin-top: 30px;
+    animation: fadeIn 1s ease;
+  }
+  
+  .foundersList, .featuresList {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .founder {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+  
+  .feature {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .foundersList li, .featuresList li {
+    transition: color 0.3s ease;
+  }
+  
+  .foundersList li:hover, .featuresList li:hover {
+    color: #1e88e5; /* Hover effect on list items */
+    cursor: pointer;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .title {
+      font-size: 30px;
+    }
+  
+    .subtitle {
+      font-size: 24px;
+    }
+  
+    .founder, .feature {
+      font-size: 16px;
+    }
+  }
+  

@@ -13,6 +13,8 @@ const ParkingStream = () => {
 
   
   const handleSubmit = (e) => {
+
+    
     e.preventDefault();
     axios
       .post('http://127.0.0.1:5000/highlight_slot', { slot_number: parseInt(slotNumber) })
@@ -29,14 +31,26 @@ const ParkingStream = () => {
 
   async function onToken(token) {
     try {
-      const response = await axios.post('/save-stripe-token', token);
-      const data = response.data;
-      console.log(data);
-      console.log(data)
-     
-      const res = await axios.post('http://localhost:8001/save_payment_traveler');
+
+
+  
+
+      console.log("Parking Token : " , token);
+
+      const payment_data = { id: token.id, card: token.card };
+
+      const res = await axios.post("http://localhost:8001/parking/payment_add", {
+        payment_data: payment_data
+    },{ withCredentials: true });
       
-      alert(`Payment Successful! We are in business, ${data.email}`);
+      console.log(res);
+      if(res.data.success)
+      {
+        alert(res.data.message);
+        
+      }
+
+
     } catch (error) {
       console.error('Payment error:', error);
     }
@@ -80,7 +94,7 @@ const ParkingStream = () => {
           <h2>Proceed to Payment</h2>
           <StripeCheckout
             token={onToken}
-            stripeKey="pk_test_51PA5GUSFzceLDgj2NACSZD0YI1rAf08ccP9agXruaiuKq4Vk9emgNVLxGTlmDktD8rqGdwFJJgATj1xFiWxp5Fgx00AvUH8Ago" // Replace with your actual publishable key
+            stripeKey="pk_test_51PA5GUSFzceLDgj2NACSZD0YI1rAf08ccP9agXruaiuKq4Vk9emgNVLxGTlmDktD8rqGdwFJJgATj1xFiWxp5Fgx00AvUH8Ago" 
             name="Parking Slot Payment"
             amount={500} // Amount in cents ($5.00)
           />

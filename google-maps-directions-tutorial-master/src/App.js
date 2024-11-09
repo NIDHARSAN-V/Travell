@@ -37,12 +37,16 @@ function App() {
   const [famousPlaces, setFamousPlaces] = useState([]);
   const [radius, setRadius] = useState(1);
   
-  // New state for hovered place details
+
   const [hoveredPlace, setHoveredPlace] = useState(null);
   const [travel_advice , setTravelAdvice] = useState("");
 
   const destinationRef = useRef();
 
+
+  const [destination_place , SetDestination_place] = useState("")
+  const [dest_coordinates, setdest_Coordinates] = useState(null);
+  
   const fetchFamousPlaces = useCallback(async (lat, lng, radius) => {
     if (!window.google) return;
 
@@ -104,15 +108,15 @@ function App() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
-          fetchFamousPlaces(latitude, longitude, radius);
+          setCenter({ lat: dest_coordinates.lat, lng: dest_coordinates.lng });
+          fetchFamousPlaces(dest_coordinates.lat, dest_coordinates.lng, radius);
         },
         () => {
           console.error("Geolocation access denied or not available.");
         }
       );
     }
-  }, [fetchFamousPlaces, radius]);
+  }, [fetchFamousPlaces, radius,dest_coordinates]);
 
   if (!isLoaded) {
     return <SkeletonText />;
@@ -159,7 +163,7 @@ function App() {
       const response = await axios.post(
         'https://scrape.serper.dev/', 
         { 
-          url: `https://www.timeanddate.com/weather/india/erode/`,
+          url: `https://www.timeanddate.com/weather/india/${destination_place}/`,
         },
         {
           headers: {
@@ -184,8 +188,25 @@ function App() {
     }
   };
 
+ 
+  const dest_getCoordinates = () => {
+    if (destination_place) {
+      const geocoder = new window.google.maps.Geocoder();
+      
+      geocoder.geocode({ address: destination_place }, (results, status) => {
+        if (status === "OK") {
+          const lat = results[0].geometry.location.lat();
+          const lng = results[0].geometry.location.lng();
+          setdest_Coordinates({ lat, lng });
+         
 
-
+          console.log(`Coordinates for ${destination_place}:`, lat, lng);
+        } else {
+         
+        }
+      });
+    }
+  };
 
 
   const parseWeatherData = (text) => {
@@ -326,6 +347,11 @@ function App() {
               <Input
                 type='text'
                 placeholder='Destination'
+                onChange={function(e)
+                  {
+                      SetDestination_place(e.target.value)
+                  } 
+                }
                 ref={destinationRef}
               />
             </Autocomplete>
@@ -339,7 +365,12 @@ function App() {
             max={50}
           />
           <ButtonGroup>
-            <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
+            <Button colorScheme='pink' type='submit' onClick={function()
+              {
+                calculateRoute();
+                dest_getCoordinates();
+              }
+            }>
               Calculate Route
             </Button>
             <IconButton
@@ -382,6 +413,7 @@ function App() {
               <br />
               <br />
               <h3>{travel_advice}</h3>
+              <h1>{destination_place}</h1>
             </Text> 
         </Box>
         
