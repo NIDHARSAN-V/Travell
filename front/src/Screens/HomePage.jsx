@@ -100,15 +100,15 @@ function HomePage() {
       <div className={styles.navigationButtons}>
        
         
-        <button onClick={() => navigateTo("/park")}>Parking Stream</button>
        
       
      
         <button onClick={() => navigateTo("/hospital")}>Hospital Near</button>
-        
-        <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
-        <button onClick={() => navigateTo("/location_info")}>Location Info</button>
         <button onClick={() => navigateTo("/ev")}>EV Station</button>
+        <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
+        
+        <button onClick={() => navigateTo("/location_info")}>Location Info</button>
+        <button onClick={() => navigateTo("/park")}>Parking Stream</button>
       </div>
 
       <button className={styles.getStartedButton}>Get Started</button>
