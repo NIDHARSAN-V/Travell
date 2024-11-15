@@ -22,17 +22,9 @@ const ParkingOwnerSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    parking_location: { 
-        type: String, 
-        required: true 
-    },
-    camera_ip_access: { 
-        type: String 
-    },
-    parking_payments: { 
-        type: Array, 
-        default: [] 
-    }
+    
+   
+
 });
 
 module.exports = mongoose.model("ParkingOwner", ParkingOwnerSchema);

@@ -92,9 +92,6 @@ const registerController = async (req, res) => {
                 email: newUser.email,
                 phone: newUser.phone,
                 location: location,
-                parking_location: parkingLocation,
-                camera_ip_access: cameraIpAccess,
-                parking_payments: [], 
             });
 
             try {
@@ -103,13 +100,13 @@ const registerController = async (req, res) => {
 
 /////here comes the error 
                 const newParkingArea = new ParkingAreaModel({
-                    parking_location: newParkingOwner.parking_location, 
+                    parking_location: parkingLocation, 
 
                     parking_owner_id: newParkingOwner._id, 
 
-                    camera_ip_access: newParkingOwner.camera_ip_access,
+                    camera_ip_access: cameraIpAccess,
 
-                    parking_payments: newParkingOwner.parking_payments,
+                    parking_payments:[],
                     
                     no_of_slots_available: 0,
                     total_no_slots: 0,

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserDataContext } from '../UserContext/UserDataContext';
 import styles from '../Styles/HomePage.module.css';
+import { UserPlaceContext } from '../UserContext/PlaceContext';
 
 function HomePage() {
   const [Auth, SetAuth] = useState(false);
@@ -10,6 +11,8 @@ function HomePage() {
   const [Data, SetData] = useState({});
   const [ProfileComplete, SetProfileComplete] = useState(true); // Track profile completion
   const navigate = useNavigate();
+  const { UpdatePlaceData } = useContext(UserPlaceContext);
+  const [place, setPlace] = useState(''); // State to track place input
 
   useEffect(() => {
     const FetchAuth = async function () {
@@ -71,10 +74,17 @@ function HomePage() {
     navigate(path);
   };
 
+  const handleGetStarted = () => {
+    if (place) {
+      UpdatePlaceData(place); // Update the place in context
+      console.log("Place updated to:", place);
+    } else {
+      alert("Please enter a place to proceed!");
+    }
+  };
+
   return (
     <div className={styles.outer}>
-      <button onClick={() => navigateTo("/profile")}>Profile</button>
-      <button onClick={() => navigateTo("/guide_list")} className={styles.guideListButton}>Guide List</button>
       {Auth ? (
         <div className={styles.homecontainer}>
           <header className={styles.homeHeader}>
@@ -84,9 +94,28 @@ function HomePage() {
           <main className={styles.homeMain}>
             <p>We are glad to have you here. Explore our services and offerings.</p>
           </main>
+          <h1>Enter the Place : </h1>
+          <input
+            type="text"
+            value={place}
+            onChange={(e) => setPlace(e.target.value)} // Update local state
+            placeholder="Enter the place to travel"
+          />
           <p>{Data.message}</p>
           <p>{Data.userid}</p>
           <p>{Data.section}</p>
+
+          {/* Navigation buttons for each route */}
+          <div className={styles.navigationButtons}>
+            <button onClick={() => navigateTo("/profile")}>Profile</button>
+            <button onClick={() => navigateTo("/guide_list")} className={styles.guideListButton}>Guide List</button>
+            <button onClick={() => navigateTo("/ev")}>EV Station</button>
+            <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
+            <button onClick={() => navigateTo("/location_info")}>Location Info</button>
+            <button onClick={() => navigateTo("/park")}>Parking Stream</button>
+          </div>
+
+          <button className={styles.getStartedButton} onClick={handleGetStarted}>Get Started</button>
         </div>
       ) : (
         <div className={styles.notAuthorizedContainer}>
@@ -95,23 +124,6 @@ function HomePage() {
           <Link to="/login" className={styles.loginLink}>Login</Link>
         </div>
       )}
-
-      {/* Navigation buttons for each route */}
-      <div className={styles.navigationButtons}>
-       
-        
-       
-      
-     
-        <button onClick={() => navigateTo("/hospital")}>Hospital Near</button>
-        <button onClick={() => navigateTo("/ev")}>EV Station</button>
-        <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
-        
-        <button onClick={() => navigateTo("/location_info")}>Location Info</button>
-        <button onClick={() => navigateTo("/park")}>Parking Stream</button>
-      </div>
-
-      <button className={styles.getStartedButton}>Get Started</button>
     </div>
   );
 }

@@ -26,18 +26,18 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ['http://localhost:5173' , 'http://localhost:3000'],  
-    methods: ['GET','POST'],
-    credentials: true  
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true
 }));
 
 
 app.use("/user", userRouter);
-app.use("/profile" ,ProfileRoute )
-app.use("/features" , FeatureRouter)
+app.use("/profile", ProfileRoute)
+app.use("/features", FeatureRouter)
 app.use("/parking", ParkingRouter)
-app.use("/traveler" ,TravelerRouter)
-app.use("/guide" , GuideRouter)
+app.use("/traveler", TravelerRouter)
+app.use("/guide", GuideRouter)
 
 
 app.get("/", authmiddle, async (req, res) => {
@@ -47,7 +47,7 @@ app.get("/", authmiddle, async (req, res) => {
             message: "Entered Home Success",
             success: true,
             userid: req.userid,
-            section:req.section
+            section: req.section
         });
     } catch (error) {
         console.error("Error in home route:", error);

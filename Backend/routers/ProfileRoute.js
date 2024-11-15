@@ -1,6 +1,6 @@
 const express = require("express");
-const { getProfileController } = require("../Userscontroller/UserProfileController");
-
+const { getProfileController, editProfileController } = require("../Userscontroller/UserProfileController");
+const { authmiddle } = require("../middlewares/authmiddleware");
 
 const ProfileRoute  = express.Router()
 
@@ -8,6 +8,7 @@ const ProfileRoute  = express.Router()
 
 
 ProfileRoute.post("/get_profile",getProfileController)
+ProfileRoute.post("/update_profile",authmiddle,editProfileController)
 
 
 

@@ -1,8 +1,8 @@
 import {
   Box,
-  Button,
-  ButtonGroup,
-  Flex,
+  Button, 
+  ButtonGroup, 
+  Flex, 
   HStack,
   IconButton,
   Input,
@@ -40,44 +40,60 @@ function App() {
 
   const [hoveredPlace, setHoveredPlace] = useState(null);
   const [travel_advice , setTravelAdvice] = useState("");
+  
 
   const destinationRef = useRef();
 
 
   const [destination_place , SetDestination_place] = useState("")
   const [dest_coordinates, setdest_Coordinates] = useState(null);
-  
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+
   const fetchFamousPlaces = useCallback(async (lat, lng, radius) => {
-    if (!window.google) return;
+  if (!window.google) return;
 
-    const service = new window.google.maps.places.PlacesService(map);
-    const request = {
-      location: new window.google.maps.LatLng(lat, lng),
-      radius: radius * 1000,
-      type: ['tourist_attraction'],
-    };
+  const service = new window.google.maps.places.PlacesService(map);
+  let dom = [];
 
-    service.nearbySearch(request, (results, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setFamousPlaces(results);
-      } else {
-        console.error('Error fetching famous places:', status);
+  if (selectedOption === "All") {
+    dom = ["tourist_attraction", "museum", "hospital"];
+  } else {
+    dom = [selectedOption]; // Wrap in an array to ensure it's in the correct format
+  }
+
+  const request = {
+    location: new window.google.maps.LatLng(lat, lng),
+    radius: radius * 1000,
+    type: dom, // type should always be an array
+  };
+
+  service.nearbySearch(request, (results, status) => {
+    if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+      setFamousPlaces(results);
+    } else {
+      console.error('Error fetching famous places:', status);
+    }
+
+    console.log('Famous Places:');
+    results.forEach(place => {
+      console.log(`Name: ${place.name}`);
+      console.log(`Rating: ${place.rating} (${place.user_ratings_total} ratings)`);
+      console.log(`Status: ${place.business_status}`);
+      console.log(`Vicinity: ${place.vicinity}`);
+      console.log(`Location: (${place.geometry.location.lat()}, ${place.geometry.location.lng()})`);
+      console.log(`Open Now: ${place.opening_hours?.open_now ? 'Yes' : 'No'}`);
+      if (place.photos && place.photos.length > 0) {
+        console.log(`Photo URL: ${place.photos[0].html_attributions[0]}`);
       }
-      console.log('Famous Places:');
-      results.forEach(place => {
-        console.log(`Name: ${place.name}`);
-        console.log(`Rating: ${place.rating} (${place.user_ratings_total} ratings)`);
-        console.log(`Status: ${place.business_status}`);
-        console.log(`Vicinity: ${place.vicinity}`);
-        console.log(`Location: (${place.geometry.location.lat()}, ${place.geometry.location.lng()})`);
-        console.log(`Open Now: ${place.opening_hours?.open_now ? 'Yes' : 'No'}`);
-        if (place.photos && place.photos.length > 0) {
-          console.log(`Photo URL: ${place.photos[0].html_attributions[0]}`);
-        }
-        console.log('--------------------------------');
-      });
+      console.log('--------------------------------');
     });
-  }, [map]);
+  });
+}, [map, selectedOption]);
 
   useEffect(() => {
     if (map && center.lat !== 0 && center.lng !== 0) {
@@ -200,7 +216,7 @@ function App() {
           setdest_Coordinates({ lat, lng });
          
 
-          console.log(`Coordinates for ${destination_place}:`, lat, lng);
+          console.log(`Coordinates for ${destination_place}:, lat, lng`);
         } else {
          
         }
@@ -379,6 +395,18 @@ function App() {
               onClick={clearRoute}
             />
           </ButtonGroup>
+
+          <div>
+      <label htmlFor="simple-dropdown">Select an option:</label>
+      <select id="simple-dropdown" value={selectedOption} onChange={handleChange}>
+     
+        <option value="All">All</option>
+        <option value="hospital">Hospitals</option>
+        <option value="tourist_attraction">Famous places</option>
+      </select>
+      {selectedOption && <p>You selected: {selectedOption}</p>}
+    </div>
+
         </HStack>
         <HStack spacing={4} mt={4} justifyContent='space-between'>
           <Text>Distance: {distance}</Text>
@@ -394,33 +422,33 @@ function App() {
           />
         </HStack>
         {hoveredPlace && ( // Display hovered place details
-          <Box 
-          mt={4} 
-          p={4} 
-          border='1px' 
-          borderColor='gray.200' 
-          borderRadius='md' 
-          sx={{ zIndex: -100 }} // Set z-index to -100
-        >
-            <Text fontWeight='bold'>{hoveredPlace.name}</Text>
-            <Text>Rating: {hoveredPlace.rating} ({hoveredPlace.user_ratings_total} ratings)</Text>
-            <Text>Vicinity: {hoveredPlace.vicinity}</Text>
-            <Text>Open Now: {hoveredPlace.opening_hours?.open_now ? 'Yes' : 'No'}</Text>
-        
-            <Text> 
-              <h1>Travel Advice:</h1> 
-              <br /> 
-              <br />
-              <br />
-              <h3>{travel_advice}</h3>
-              <h1>{destination_place}</h1>
-            </Text> 
-        </Box>
-        
-        )}
-      </Box>
-    </Flex>
-  );
-}
+  <Box 
+    mt={4} 
+    p={4} 
+    border="1px" 
+    borderColor="gray.200" 
+    borderRadius="md"  
+    style={{ zIndex: -100 }} // Corrected zIndex
+  >
+    <Text fontWeight="bold">{hoveredPlace.name}</Text>
+    <Text>Rating: {hoveredPlace.rating} ({hoveredPlace.user_ratings_total} ratings)</Text>
+    <Text>Vicinity: {hoveredPlace.vicinity}</Text>
+    <Text>Open Now: {hoveredPlace.opening_hours?.open_now ? 'Yes' : 'No'}</Text>
 
-export default App;
+    <Text> 
+      <h1>Travel Advice:</h1> 
+      <br /> 
+      <br />
+      <br />
+      <h3>{travel_advice}</h3>
+      <h1>{destination_place}</h1>
+    </Text> 
+  </Box>
+)}
+
+      </Box> 
+    </Flex> 
+  ); 
+} 
+
+export default App; 

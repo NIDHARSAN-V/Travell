@@ -103,14 +103,16 @@ const ParkingStream = () => {
 
       <h2>Live Video Feed</h2>
       <img
-        src="http://127.0.0.1:5000/video_feed"
-        alt="Live Video Feed"
-        style={{
-          maxWidth: '100%',
-          height: 'auto',
-          borderRadius: '10px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        }}
+  src="http://127.0.0.1:5000/video_feed"
+  alt="Live Video Feed"
+  style={{
+    maxWidth: '70%',  // Adjust this value to control the width of the video
+    height: '50vh',
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    marginTop: '20px',  // Optional: adds some space above the video
+  }}
+
       />
     </div>
   );

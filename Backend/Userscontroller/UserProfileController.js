@@ -1,8 +1,8 @@
 const userModel = require("../Models/usermodel");
 const guideModel = require("../Models/GuideModel");
 const TravelerModel = require("../Models/TravelerModel");
-const ParkingOwnerModel = require("../Models/ParkingOwner");
-const ParkingAreaModel = require("../Models/Parking_Area_Model");
+const ParkingOwnerModel = require("../Models/ParkingOwner"); 
+const ParkingAreaModel = require("../Models/Parking_Area_Model"); 
 
 const getProfileController = async (req, res) => {
     const { userid } = req.body;
@@ -97,113 +97,81 @@ const getProfileController = async (req, res) => {
 
 
 const editProfileController = async (req, res) => {
-    const { userid, username, email, phone, section, travelerDetails, guideDetails, parkingOwnerDetails, parkingAreaDetails } = req.body;
+    const { section, _id, parkingAreaDetails } = req.body;
+
+    if (!section || !_id) {
+        return res.status(400).send({
+            message: "Missing section or user ID",
+            success: false,
+        });
+    }
 
     try {
-        // Find the user by ID
-        const user = await userModel.findById(userid);
-        if (!user) {
-            return res.status(404).send({
-                message: "User not found",
+        if (section === "traveler") {
+            // Handle traveler profile update logic here (if needed)
+            // Add logic for updating traveler profile
+        } 
+        else if (section === "guide") {
+            // Handle guide profile update logic here (if needed)
+            // Add logic for updating guide profile
+        } 
+        else if (section === "parking-slot-owner") {
+            // Ensure parking owner exists
+            const parkingOwnerDetails = await ParkingOwnerModel.findOne({ user_id: _id });
+            if (!parkingOwnerDetails) {
+                return res.status(404).send({
+                    message: "Parking Owner details not found",
+                    success: false,
+                });
+            }
+
+            // Update parking owner details
+            if (parkingAreaDetails?.parking_owner_phone) {
+                parkingOwnerDetails.phone = parkingAreaDetails.parking_owner_phone;
+                await parkingOwnerDetails.save();
+            }
+
+            // Find the corresponding parking area details
+            const parkingAreaDetailsObj = await ParkingAreaModel.findOne({ parking_owner_id: parkingOwnerDetails._id });
+            if (!parkingAreaDetailsObj) {
+                return res.status(404).send({
+                    message: "Parking area details not found",
+                    success: false,
+                });
+            }
+
+            // Update parking area details
+            if (parkingAreaDetails?.parking_location) {
+                parkingAreaDetailsObj.parking_location = parkingAreaDetails.parking_location;
+            }
+            if (parkingAreaDetails?.camera_ip_access) {
+                parkingAreaDetailsObj.camera_ip_access = parkingAreaDetails.camera_ip_access;
+            }
+            if (parkingAreaDetails?.parking_owner_phone) {
+                parkingAreaDetailsObj.parking_owner_phone = parkingAreaDetails.parking_owner_phone;
+            }
+
+            await parkingAreaDetailsObj.save();
+
+            res.status(200).send({
+                message: "Parking details updated successfully",
+                success: true,
+            });
+        } 
+        else {
+            return res.status(400).send({
+                message: "Unknown section type",
                 success: false,
             });
         }
 
-        // Update basic user info
-        if (username) user.username = username;
-        if (email) user.email = email;
-        if (phone) user.phone = phone;
-
-        // Update section-specific details
-        switch (section) {
-            case 'guide':
-                if (guideDetails) {
-                    const updatedGuide = await guideModel.findOneAndUpdate(
-                        { user_id: user._id },
-                        { ...guideDetails },
-                        { new: true }
-                    );
-                    if (!updatedGuide) {
-                        return res.status(404).send({
-                            message: "Guide details not found",
-                            success: false,
-                        });
-                    }
-                }
-                break;
-
-            case 'traveler':
-                if (travelerDetails) {
-                    const updatedTraveler = await TravelerModel.findOneAndUpdate(
-                        { user_id: user._id },
-                        { ...travelerDetails },
-                        { new: true }
-                    );
-                    if (!updatedTraveler) {
-                        return res.status(404).send({
-                            message: "Traveler details not found",
-                            success: false,
-                        });
-                    }
-                }
-                break;
-
-            case 'parking-slot-owner':
-                if (parkingOwnerDetails) {
-                    const updatedParkingOwner = await ParkingOwnerModel.findOneAndUpdate(
-                        { user_id: user._id },
-                        { ...parkingOwnerDetails },
-                        { new: true }
-                    );
-                    if (!updatedParkingOwner) {
-                        return res.status(404).send({
-                            message: "Parking slot owner details not found",
-                            success: false,
-                        });
-                    }
-
-                    if (parkingAreaDetails) {
-                        const updatedParkingArea = await ParkingAreaModel.findOneAndUpdate(
-                            { parking_owner_id: updatedParkingOwner._id },
-                            { ...parkingAreaDetails },
-                            { new: true }
-                        );
-                        if (!updatedParkingArea) {
-                            return res.status(404).send({
-                                message: "Parking area details not found",
-                                success: false,
-                            });
-                        }
-                    }
-                }
-                break;
-
-            default:
-                return res.status(400).send({
-                    message: "Invalid section type",
-                    success: false,
-                });
-        }
-
-        // Save the updated user details
-        await user.save();
-
-        res.status(200).send({
-            message: "Profile updated successfully",
-            success: true,
-        });
     } catch (error) {
         console.error("Error in editProfileController:", error);
         res.status(500).send({
-            message: "Error updating profile",
             success: false,
-            error: error.message,
+            message: `Error updating profile: ${error.message}`,
         });
     }
-};
+}; 
 
 module.exports = { getProfileController, editProfileController };
-
-
-
-

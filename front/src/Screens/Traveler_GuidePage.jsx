@@ -2,13 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserDataContext } from '../UserContext/UserDataContext';
+import { UserPlaceContext } from '../UserContext/PlaceContext';
 
 function Traveler_GuidePage() {
   const [guides, setGuides] = useState([]);
   const { UserId } = useContext(UserDataContext);
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [locationFilter, setLocationFilter] = useState(''); 
+  const { Place } = useContext(UserPlaceContext); // Get default place from context
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [locationFilter, setLocationFilter] = useState(Place || ''); // Initialize with the context value
   const [bookingDate, setBookingDate] = useState(''); // State for booking date
   const [bookingMessage, setBookingMessage] = useState(''); // State for booking feedback message
   const navigate = useNavigate();
@@ -22,7 +25,7 @@ function Traveler_GuidePage() {
         setGuides(response.data);
       } catch (error) {
         setError('Failed to load guides');
-        console.error("Error fetching guides:", error);
+        console.error('Error fetching guides:', error);
       } finally {
         setLoading(false);
       }
@@ -39,17 +42,21 @@ function Traveler_GuidePage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8001/traveler/book_guide', {
-        guideId,
-        userId: UserId,
-        date: bookingDate
-    }, {
-        withCredentials: true
-    });
-    
+      const response = await axios.post(
+        'http://localhost:8001/traveler/book_guide',
+        {
+          guideId,
+          userId: UserId,
+          date: bookingDate,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
       setBookingMessage(`Booking successful for ${response.data.guideName}`);
     } catch (error) {
-      console.error("Booking failed:", error);
+      console.error('Booking failed:', error);
       setBookingMessage('Booking failed. Please try again.');
     }
   };
@@ -67,8 +74,11 @@ function Traveler_GuidePage() {
     return <div>{error}</div>;
   }
 
-  const filteredGuides = guides.filter(guide =>
-    guide.location.toLowerCase().includes(locationFilter.toLowerCase())
+  // Combine default `Place` filter with the input field
+  const filteredGuides = guides.filter(
+    (guide) =>
+      guide.location.toLowerCase().includes(locationFilter.toLowerCase()) ||
+      guide.location.toLowerCase().includes(Place.toLowerCase())
   );
 
   return (
@@ -77,7 +87,7 @@ function Traveler_GuidePage() {
       <h1>Available Guides</h1>
       <input
         type="text"
-        placeholder="Filter by location"
+        placeholder={`Filter by location (default: ${Place})`}
         value={locationFilter}
         onChange={(e) => setLocationFilter(e.target.value)}
       />
@@ -98,7 +108,9 @@ function Traveler_GuidePage() {
               <p>Ratings: {guide.ratings}</p>
               <p>Reviews: {guide.reviews && guide.reviews.length}</p>
               <button onClick={() => handleBooking(guide._id)}>Book Guide</button>
-              <button onClick={() => handleVerifyGuide(guide._id)}>Verify Guide</button> {/* New Verify Guide button */}
+              <button onClick={() => handleVerifyGuide(guide._id)}>
+                Verify Guide
+              </button>
             </div>
           ))
         ) : (
