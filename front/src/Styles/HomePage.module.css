@@ -1,8 +1,6 @@
-/* HomePage.module.css */
-
-.outer {
-    background-color: #121212;
-    color: #f0f0f0;
+.outer { 
+    background-color: #f9f9f9; 
+    color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,134 +9,272 @@
     font-family: Arial, sans-serif;
     padding: 20px;
     transition: all 0.3s ease;
-  }
+}
   
-  button {
-    background-color: #1f1f1f;
-    color: #f0f0f0;
-    border: 2px solid #3a3a3a;
+button {
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #ddd;
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
     margin: 10px;
     transition: all 0.3s ease;
-  }
+}
   
-  button:hover {
-    background-color: #3a3a3a;
-    border-color: #575757;
+button:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
     transform: scale(1.05);
-  }
+}
   
-  button:active {
+button:active {
     transform: scale(0.95);
-  }
+}
   
-  .guide-list-button {
-    background-color: #2e2e2e;
-    color: #f5a623;
+.guide-list-button {
+    background-color: #f0f8ff;
+    color: #0056b3;
     transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+}
   
-  .guide-list-button:hover {
-    background-color: #3e3e3e;
-  }
+.guide-list-button:hover {
+    background-color: #e6f2ff;
+}
   
-  .homecontainer {
+.homecontainer {
     width: 80%;
     max-width: 800px;
-    background-color: #222;
+    background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     animation: fadeIn 0.6s ease-in-out;
-  }
+}
   
-  @keyframes fadeIn {
+@keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
-  }
+}
   
-  .home-header h1 {
+.home-header h1 {
     font-size: 2.5rem;
-    color: #f5a623;
+    color: #0056b3;
     margin-bottom: 15px;
     transition: color 0.3s ease;
-  }
+}
   
-  .logout-button {
+.logout-button {
     margin-top: 20px;
-    background-color: #ff4c4c;
-    border: 2px solid #ff6b6b;
-    color: #fff;
+    background-color: #ffdddd;
+    border: 2px solid #ffcccc;
+    color: #b30000;
     transition: background-color 0.3s ease;
-  }
+}
   
-  .logout-button:hover {
-    background-color: #ff6b6b;
-  }
+.logout-button:hover {
+    background-color: #ffcccc;
+}
   
-  .home-main p {
+.home-main p {
     font-size: 1.2rem;
     margin-top: 20px;
-    color: #ddd;
-  }
+    color: #666;
+}
   
-  .not-authorized-container {
-    background-color: #1a1a1a;
+.not-authorized-container {
+    background-color: #f8d7da;
     padding: 30px;
     border-radius: 8px;
     text-align: center;
     animation: shake 0.6s ease-in-out;
-  }
+}
   
-  @keyframes shake {
+@keyframes shake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
-  }
+}
   
-  .not-authorized-container h1 {
+.not-authorized-container h1 {
     font-size: 2rem;
-    color: #ff4c4c;
+    color: #b30000;
     margin-bottom: 10px;
-  }
+}
   
-  .no-way-home {
-    color: #ff6b6b;
+.no-way-home {
+    color: #e60000;
     font-style: italic;
-  }
+}
   
-  .login-link {
-    color: #1e90ff;
+.login-link {
+    color: #0056b3;
     text-decoration: none;
     transition: color 0.3s ease;
-  }
+}
   
-  .login-link:hover {
-    color: #00aaff;
-  }
+.login-link:hover {
+    color: #003d80;
+}
   
-  .additional-button {
-    background-color: #444;
-    color: #f0f0f0;
+.additional-button {
+    background-color: #e8e8e8;
+    color: #333;
     padding: 10px 20px;
     margin-top: 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-  }
+}
   
-  .additional-button:hover {
-    background-color: #555;
+.additional-button:hover {
+    background-color: #d9d9d9;
     transform: scale(1.05);
-  }
+}
   
-  .additional-button:active {
+.additional-button:active {
     transform: scale(0.95);
-  }
-  
-  
+}
+.outer { 
+  background-color: #f9f9f9; 
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+button {
+  background-color: #fff;
+  color: #333;
+  border: 2px solid #ddd;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.guide-list-button {
+  background-color: #f0f8ff;
+  color: #0056b3;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.guide-list-button:hover {
+  background-color: #e6f2ff;
+}
+
+.homecontainer {
+  width: 80%;
+  max-width: 800px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.home-header h1 {
+  font-size: 2.5rem;
+  color: #0056b3;
+  margin-bottom: 15px;
+  transition: color 0.3s ease;
+}
+
+.logout-button {
+  margin-top: 20px;
+  background-color: #ffdddd;
+  border: 2px solid #ffcccc;
+  color: #b30000;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #ffcccc;
+}
+
+.home-main p {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: #666;
+}
+
+.not-authorized-container {
+  background-color: #f8d7da;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  animation: shake 0.6s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.not-authorized-container h1 {
+  font-size: 2rem;
+  color: #b30000;
+  margin-bottom: 10px;
+}
+
+.no-way-home {
+  color: #e60000;
+  font-style: italic;
+}
+
+.login-link {
+  color: #0056b3;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover {
+  color: #003d80;
+}
+
+.additional-button {
+  background-color: #e8e8e8;
+  color: #333;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.additional-button:hover {
+  background-color: #d9d9d9;
+  transform: scale(1.05);
+}
+
+.additional-button:active {
+  transform: scale(0.95);
+}

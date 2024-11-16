@@ -107,12 +107,14 @@ function HomePage() {
 
           {/* Navigation buttons for each route */}
           <div className={styles.navigationButtons}>
+            {/* <button onClick={() => navigateTo("/loc")}>Location Map</button> */}
             <button onClick={() => navigateTo("/profile")}>Profile</button>
             <button onClick={() => navigateTo("/guide_list")} className={styles.guideListButton}>Guide List</button>
             <button onClick={() => navigateTo("/ev")}>EV Station</button>
             <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
-            <button onClick={() => navigateTo("/location_info")}>Location Info</button>
             <button onClick={() => navigateTo("/park")}>Parking Stream</button>
+            <a href="http://localhost:3000/"> <button>LocationMap</button></a>
+            <a href="https://plane-it-travel-ai.vercel.app/plan-a-trip"><button>Planner</button></a>
           </div>
 
           <button className={styles.getStartedButton} onClick={handleGetStarted}>Get Started</button>

@@ -18,6 +18,7 @@ import GuideBookingView from './Screens/GuideBookingView';
 import LocationInfo from './Screens/LocationInfo';
 import EVStation from './Screens/EVStation';
 import { UserPlaceProvider } from './UserContext/PlaceContext';
+// import LocData from './Screens/LocData';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/guide_booking_view" element={<GuideBookingView/>} /> 
             <Route path="/location_info" element={<LocationInfo/>} />
             <Route path="/ev" element={<EVStation/>} /> 
+            {/* <Route path="/loc" element={<LocData/>} />  */}
           </Routes>
         </BrowserRouter>
       </UserPlaceProvider>
