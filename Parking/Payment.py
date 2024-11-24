@@ -6,5 +6,4 @@ app = Flask(__name__)
 def park_payment():
     return jsonify({'message': 'Payment successful!'}), 200
 
-if __name__ == '__main__':
-    app.run(port=6000)
+if __name__ == '__main__':    app.run(port=6000)

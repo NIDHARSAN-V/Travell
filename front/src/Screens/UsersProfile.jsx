@@ -19,7 +19,7 @@ function UsersProfile() {
         const getProfile = async () => {
             try {
                 const res = await axios.post("http://localhost:8001/profile/get_profile", { userid: UserId });
-                console.log("Profile get : " , res.data.user)
+                console.log("Profile get : ", res.data.user);
                 setUserProfile(res.data.user);
                 setLoading(false);
 
@@ -52,6 +52,12 @@ function UsersProfile() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
 
+        // Update general userProfile fields
+        if (name in userProfile) {
+            setUserProfile({ ...userProfile, [name]: value });
+        }
+
+        // Update section-specific fields
         if (userProfile.section === 'parking-slot-owner') {
             if (name === 'camera_ip_access') {
                 setParkingAreaDetails({ ...parkingAreaDetails, camera_ip_access: value });
@@ -73,15 +79,14 @@ function UsersProfile() {
 
             // Update based on the section
             if (userProfile.section === 'parking-slot-owner') {
-                console.log("ksjdhaflkjsdhfkajsdhf")
                 const res = await axios.post(
                     "http://localhost:8001/profile/update_profile",
                     updatedUserProfile,
                     {
-                      withCredentials: true,
+                        withCredentials: true,
                     }
-                  );
-             console.log("Response in Park Profile:",res)
+                );
+                console.log("Response in Park Profile:", res);
             }
 
             setIsEditing(false); // Exit editing mode after saving
@@ -177,6 +182,6 @@ function UsersProfile() {
             )} 
         </div> 
     ); 
-} 
+}
 
 export default UsersProfile;

@@ -404,7 +404,7 @@ function App() {
         <option value="hospital">Hospitals</option>
         <option value="tourist_attraction">Famous places</option>
       </select>
-      {selectedOption && <p>You selected: {selectedOption}</p>}
+     
     </div>
 
         </HStack>

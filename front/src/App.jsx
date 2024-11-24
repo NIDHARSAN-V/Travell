@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
-
+import "./App.css"
 import HomePage from './Screens/HomePage';
 import { UserDataProvider } from './UserContext/UserDataContext';
 import Navbar from './Components/Navbar';
@@ -18,8 +18,8 @@ import GuideBookingView from './Screens/GuideBookingView';
 import LocationInfo from './Screens/LocationInfo';
 import EVStation from './Screens/EVStation';
 import { UserPlaceProvider } from './UserContext/PlaceContext';
+import Footer from './Components/Footer';
 // import LocData from './Screens/LocData';
-
 function App() {
   return (
     <UserDataProvider>
@@ -45,6 +45,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </UserPlaceProvider>
+        {/* <Footer/> */}
     </UserDataProvider>
   );
 }

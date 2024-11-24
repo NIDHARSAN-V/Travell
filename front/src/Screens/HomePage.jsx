@@ -1,25 +1,23 @@
-import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { UserDataContext } from '../UserContext/UserDataContext';
-import styles from '../Styles/HomePage.module.css';
 import { UserPlaceContext } from '../UserContext/PlaceContext';
+import styles from '../Styles/HomePage.module.css';
 
 function HomePage() {
   const [Auth, SetAuth] = useState(false);
   const { UpdateUserData } = useContext(UserDataContext);
   const [Data, SetData] = useState({});
-  const [ProfileComplete, SetProfileComplete] = useState(true); // Track profile completion
+  const [ProfileComplete, SetProfileComplete] = useState(true);
   const navigate = useNavigate();
   const { UpdatePlaceData } = useContext(UserPlaceContext);
-  const [place, setPlace] = useState(''); // State to track place input
+  const [place, setPlace] = useState('');
 
   useEffect(() => {
-    const FetchAuth = async function () {
+    const FetchAuth = async () => {
       try {
         const res = await axios.get('http://localhost:8001/');
-        console.log("In Home Screen Data:", res.data);
-
         if (res.data.success) {
           SetData(res.data);
           UpdateUserData(res.data.userid, res.data.section);
@@ -28,101 +26,76 @@ function HomePage() {
           SetAuth(false);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
-
     FetchAuth();
   }, [UpdateUserData]);
 
   useEffect(() => {
-    const CheckProfileCompletion = async function () {
+    const CheckProfileCompletion = async () => {
       if (Data.userid) {
         try {
           const res = await axios.get(`http://localhost:8001/profile/${Data.userid}`);
-          console.log("Profile Check:", res.data);
-
           if (!res.data.complete) {
             SetProfileComplete(false);
-            navigate("/profile"); // Redirect to profile if incomplete
+            navigate("/profile");
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };
-
-    if (Auth) {
-      CheckProfileCompletion();
-    }
+    if (Auth) CheckProfileCompletion();
   }, [Auth, Data.userid, navigate]);
 
-  axios.defaults.withCredentials = true;
-
-  const handleLogout = async function () {
+  const handleLogout = async () => {
     try {
-      const res = await axios.get('http://localhost:8001/logout');
-      if (res) {
-        window.location.reload(true);
-      }
+      await axios.get('http://localhost:8001/logout');
+      window.location.reload(true);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  };
-
-  const navigateTo = (path) => {
-    navigate(path);
   };
 
   const handleGetStarted = () => {
     if (place) {
-      UpdatePlaceData(place); // Update the place in context
-      console.log("Place updated to:", place);
+      UpdatePlaceData(place);
     } else {
       alert("Please enter a place to proceed!");
     }
   };
 
   return (
-    <div className={styles.outer}>
+    <div className={styles.container}>
       {Auth ? (
-        <div className={styles.homecontainer}>
-          <header className={styles.homeHeader}>
+        <>
+          <div className={styles.welcomeMessage}>
             <h1>Welcome to Traveler</h1>
-            <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
-          </header>
-          <main className={styles.homeMain}>
-            <p>We are glad to have you here. Explore our services and offerings.</p>
-          </main>
-          <h1>Enter the Place : </h1>
-          <input
-            type="text"
-            value={place}
-            onChange={(e) => setPlace(e.target.value)} // Update local state
-            placeholder="Enter the place to travel"
-          />
-          <p>{Data.message}</p>
-          <p>{Data.userid}</p>
-          <p>{Data.section}</p>
-
-          {/* Navigation buttons for each route */}
-          <div className={styles.navigationButtons}>
-            {/* <button onClick={() => navigateTo("/loc")}>Location Map</button> */}
-            <button onClick={() => navigateTo("/profile")}>Profile</button>
-            <button onClick={() => navigateTo("/guide_list")} className={styles.guideListButton}>Guide List</button>
-            <button onClick={() => navigateTo("/ev")}>EV Station</button>
-            <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
-            <button onClick={() => navigateTo("/park")}>Parking Stream</button>
-            <a href="http://localhost:3000/"> <button>LocationMap</button></a>
-            <a href="https://plane-it-travel-ai.vercel.app/plan-a-trip"><button>Planner</button></a>
           </div>
-
-          <button className={styles.getStartedButton} onClick={handleGetStarted}>Get Started</button>
-        </div>
+          <div className={styles.gridContent}>
+            <div className={styles.getStarted}>
+              <input
+                type="text"
+                value={place}
+                onChange={(e) => setPlace(e.target.value)}
+                placeholder="Enter the place to travel"
+              />
+              <button onClick={handleGetStarted}>Get Started</button>
+            </div>
+            <div className={styles.features}>
+              <h2>Navigate</h2>
+              <button onClick={() => navigate("/profile")}>Profile</button>
+              <button onClick={() => navigate("/guide_list")}>Guide List</button>
+              <button onClick={() => navigate("/ev")}>EV Station</button>
+              <button onClick={() => navigate("/guide_booking_view")}>Guide Booking View</button>
+              <button onClick={() => navigate("/park")}>Parking Stream</button>
+            </div>
+          </div>
+        </>
       ) : (
         <div className={styles.notAuthorizedContainer}>
           <h1>You Are Not Authorized to the Home Page</h1>
-          <p className={styles.noWayHome}>NO WAY HOME</p>
           <Link to="/login" className={styles.loginLink}>Login</Link>
         </div>
       )}
