@@ -18,8 +18,7 @@ import GuideBookingView from './Screens/GuideBookingView';
 
 import EVStation from './Screens/EVStation';
 import { UserPlaceProvider } from './UserContext/PlaceContext';
-import Footer from './Components/Footer';
-// import LocData from './Screens/LocData';
+
 function App() {
   return (
     <UserDataProvider>
@@ -44,7 +43,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </UserPlaceProvider>
-        {/* <Footer/> */}
+
     </UserDataProvider>
   );
 }

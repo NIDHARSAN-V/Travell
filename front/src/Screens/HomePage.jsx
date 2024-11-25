@@ -2,17 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserDataContext } from '../UserContext/UserDataContext';
-import { UserPlaceContext } from '../UserContext/PlaceContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUser,
-  faList,
-  faChargingStation,
-  faMapMarkerAlt,
-  faSignOutAlt,
-  faParking,
-} from '@fortawesome/free-solid-svg-icons';
 import styles from '../Styles/HomePage.module.css';
+import { UserPlaceContext } from '../UserContext/PlaceContext';
 
 function HomePage() {
   const [Auth, SetAuth] = useState(false);
@@ -24,7 +15,7 @@ function HomePage() {
   const [place, setPlace] = useState('');
 
   useEffect(() => {
-    const FetchAuth = async () => {
+    const FetchAuth = async function () {
       try {
         const res = await axios.get('http://localhost:8001/');
         if (res.data.success) {
@@ -35,14 +26,14 @@ function HomePage() {
           SetAuth(false);
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
     FetchAuth();
   }, [UpdateUserData]);
 
   useEffect(() => {
-    const CheckProfileCompletion = async () => {
+    const CheckProfileCompletion = async function () {
       if (Data.userid) {
         try {
           const res = await axios.get(`http://localhost:8001/profile/${Data.userid}`);
@@ -51,20 +42,30 @@ function HomePage() {
             navigate("/profile");
           }
         } catch (error) {
-          console.error(error);
+          console.log(error);
         }
       }
     };
-    if (Auth) CheckProfileCompletion();
+    if (Auth) {
+      CheckProfileCompletion();
+    }
   }, [Auth, Data.userid, navigate]);
 
-  const handleLogout = async () => {
+  axios.defaults.withCredentials = true;
+
+  const handleLogout = async function () {
     try {
-      await axios.get('http://localhost:8001/logout');
-      window.location.reload(true);
+      const res = await axios.get('http://localhost:8001/logout');
+      if (res) {
+        window.location.reload(true);
+      }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
+  };
+
+  const navigateTo = (path) => {
+    navigate(path);
   };
 
   const handleGetStarted = () => {
@@ -78,13 +79,14 @@ function HomePage() {
   return (
     <div className={styles.container}>
       {Auth ? (
-        <>
-          <div className={styles.welcomeMessage}>
-            <h1>Welcome to Traveler</h1>
-            <img src="home_bg.jpg" alt="Home Background" className={styles.image} />
-          </div>
-          <div className={styles.gridContent}>
-            <div className={styles.getStarted}>
+        <div className={styles.homecontainer}>
+          <header className={styles.homeHeader}>
+            <h1 className={styles.welcomeMessage}>Welcome to Traveler</h1>
+            <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+          </header>
+          <main className={styles.gridContent}>
+            <section className={styles.getStarted}>
+              <h1>Enter the Place:</h1>
               <input
                 type="text"
                 value={place}
@@ -92,50 +94,26 @@ function HomePage() {
                 placeholder="Enter the place to travel"
               />
               <button onClick={handleGetStarted}>Get Started</button>
-              <div className="chooseonmap">
-                <button>Choose On Map</button>
-              </div>
-            </div>
-            <div className={styles.features}>
-              <h2>Navigate</h2>
-              
+            </section>
+            <section className={styles.features}>
+           
               <div className={styles.buttonWrapper}>
-                <FontAwesomeIcon icon={faUser} className={styles.icon} />
-                <button onClick={() => navigate("/profile")}>Profile</button>
+                <button onClick={() => navigateTo("/profile")}>Profile</button>
+                <button onClick={() => navigateTo("/guide_list")}>Guide List</button>
+                <button onClick={() => navigateTo("/ev")}>EV Station</button>
+                <button onClick={() => navigateTo("/guide_booking_view")}>Guide Booking View</button>
+                <button onClick={() => navigateTo("/park")}>Parking Stream</button>
+                <a href="http://localhost:3000/"><button>Location Map</button></a>
+                <a href="https://plane-it-travel-ai.vercel.app/plan-a-trip"><button>Planner</button></a>
               </div>
-
-              <div className={styles.buttonWrapper}>
-                <FontAwesomeIcon icon={faList} className={styles.icon} />
-                <button onClick={() => navigate("/guide_list")}>Guide List</button>
-              </div>
-
-              <div className={styles.buttonWrapper}>
-                <FontAwesomeIcon icon={faChargingStation} className={styles.icon} />
-                <button onClick={() => navigate("/ev")}>EV Station</button>
-              </div>
-
-              
-
-              {Data.section === 'guide' && (
-                <div className={styles.buttonWrapper}>
-                  <FontAwesomeIcon icon={faMapMarkerAlt} className={styles.icon} />
-                  <button onClick={() => navigate('/guide_booking_view')}>Guide Booking View</button>
-                </div>
-              )}
-
-              <div className={styles.buttonWrapper}>
-                <FontAwesomeIcon icon={faParking} className={styles.icon} />
-                <button onClick={() => navigate("/park")}>Parking Stream</button>
-              </div>
-            </div>
-          </div>
-        </>
+            </section>
+          </main>
+        </div>
       ) : (
         <div className={styles.notAuthorizedContainer}>
           <h1>You Are Not Authorized to the Home Page</h1>
-          <Link to="/login" className={styles.loginLink}>
-            <FontAwesomeIcon icon={faSignOutAlt} /> Login
-          </Link>
+          <p className={styles.noWayHome}>NO WAY HOME</p>
+          <Link to="/login" className={styles.loginLink}>Login</Link>
         </div>
       )}
     </div>
