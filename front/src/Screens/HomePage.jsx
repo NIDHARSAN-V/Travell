@@ -3,6 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserDataContext } from '../UserContext/UserDataContext';
 import { UserPlaceContext } from '../UserContext/PlaceContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faUser,
+  faList,
+  faChargingStation,
+  faMapMarkerAlt,
+  faSignOutAlt,
+  faParking,
+} from '@fortawesome/free-solid-svg-icons';
 import styles from '../Styles/HomePage.module.css';
 
 function HomePage() {
@@ -72,6 +81,7 @@ function HomePage() {
         <>
           <div className={styles.welcomeMessage}>
             <h1>Welcome to Traveler</h1>
+            <img src="home_bg.jpg" alt="Home Background" className={styles.image} />
           </div>
           <div className={styles.gridContent}>
             <div className={styles.getStarted}>
@@ -82,21 +92,50 @@ function HomePage() {
                 placeholder="Enter the place to travel"
               />
               <button onClick={handleGetStarted}>Get Started</button>
+              <div className="chooseonmap">
+                <button>Choose On Map</button>
+              </div>
             </div>
             <div className={styles.features}>
               <h2>Navigate</h2>
-              <button onClick={() => navigate("/profile")}>Profile</button>
-              <button onClick={() => navigate("/guide_list")}>Guide List</button>
-              <button onClick={() => navigate("/ev")}>EV Station</button>
-              <button onClick={() => navigate("/guide_booking_view")}>Guide Booking View</button>
-              <button onClick={() => navigate("/park")}>Parking Stream</button>
+              
+              <div className={styles.buttonWrapper}>
+                <FontAwesomeIcon icon={faUser} className={styles.icon} />
+                <button onClick={() => navigate("/profile")}>Profile</button>
+              </div>
+
+              <div className={styles.buttonWrapper}>
+                <FontAwesomeIcon icon={faList} className={styles.icon} />
+                <button onClick={() => navigate("/guide_list")}>Guide List</button>
+              </div>
+
+              <div className={styles.buttonWrapper}>
+                <FontAwesomeIcon icon={faChargingStation} className={styles.icon} />
+                <button onClick={() => navigate("/ev")}>EV Station</button>
+              </div>
+
+              
+
+              {Data.section === 'guide' && (
+                <div className={styles.buttonWrapper}>
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className={styles.icon} />
+                  <button onClick={() => navigate('/guide_booking_view')}>Guide Booking View</button>
+                </div>
+              )}
+
+              <div className={styles.buttonWrapper}>
+                <FontAwesomeIcon icon={faParking} className={styles.icon} />
+                <button onClick={() => navigate("/park")}>Parking Stream</button>
+              </div>
             </div>
           </div>
         </>
       ) : (
         <div className={styles.notAuthorizedContainer}>
           <h1>You Are Not Authorized to the Home Page</h1>
-          <Link to="/login" className={styles.loginLink}>Login</Link>
+          <Link to="/login" className={styles.loginLink}>
+            <FontAwesomeIcon icon={faSignOutAlt} /> Login
+          </Link>
         </div>
       )}
     </div>
