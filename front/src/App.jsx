@@ -23,8 +23,8 @@ function App() {
   return (
     <UserDataProvider>
       <UserPlaceProvider>
-        <Navbar/>
         <BrowserRouter>
+        <Navbar/>
           <Routes>
             <Route path="/" element={<HomePage />} /> 
             <Route path="/register" element={<RegisterScreen />} /> 
