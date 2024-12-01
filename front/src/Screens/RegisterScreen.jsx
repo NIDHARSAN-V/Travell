@@ -37,6 +37,11 @@ function RegisterScreen() {
 
   return (
     <div className={styles.outerdiv}>
+
+
+      <div className={styles.image}>
+         <img src="/home_bg.jpg" alt="" />
+      </div>
       <div className={styles.loginForm}>
         <div className={styles.text}>Register Here</div>
         <form onSubmit={handleSubmit}>
