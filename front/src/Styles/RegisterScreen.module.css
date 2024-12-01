@@ -209,7 +209,8 @@
 @media (max-width: 900px) {
   /* Remove image and clip-path */
   .outerdiv{
-    display: block;
+    display: flex;
+    justify-content: center;
   }
   .image {
     display: none;
