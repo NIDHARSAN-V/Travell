@@ -207,30 +207,32 @@
 }
  
 @media (max-width: 900px) {
-  /* Remove image and clip-path */
+
   .outerdiv{
     display: flex;
     justify-content: center;
+    background-image:url("home_bg.jpg");
   }
   .image {
     display: none;
   }
 
   .image img {
-    clip-path: none; /* Remove any clip path */
-    transform: none; /* Remove skew transform */
+    clip-path: none;
+    transform: none; 
   }
 
-  /* Ensure the login form remains centered */
+
   .loginForm {
     display: flex;
+    width: 100%;
+    background: none;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(0, 0, 0);
     min-height: 100vh;
   }
 
-  /* Make sure the form has proper margin and padding when the image is gone */
+
 }
 

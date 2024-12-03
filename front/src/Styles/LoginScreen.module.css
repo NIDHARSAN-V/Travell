@@ -1,4 +1,4 @@
-/* General Container */
+General Container
 .outerdiv {
     display: flex;
     justify-content: center;
@@ -30,6 +30,7 @@
     justify-content: space-around;
     margin-bottom: 20px;
     cursor: pointer;
+    gap: 5px;
     transition: transform 0.3s ease;
   }
   
