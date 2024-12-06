@@ -5,6 +5,7 @@ const ParkingOwnerModel = require("../Models/ParkingOwner");
 const ParkingAreaModel = require("../Models/Parking_Area_Model"); 
 
 const getProfileController = async (req, res) => {
+    console.log("Getting Profile")
     const { userid } = req.body;
 
     try {
@@ -97,7 +98,9 @@ const getProfileController = async (req, res) => {
 
 
 const editProfileController = async (req, res) => {
-    const { section, _id, parkingAreaDetails } = req.body;
+    const { section , _id} = req.body;
+    console.log("In edit profile controller")
+    console.log(req.body)
 
     if (!section || !_id) {
         return res.status(400).send({
@@ -108,16 +111,24 @@ const editProfileController = async (req, res) => {
 
     try {
         if (section === "traveler") {
-            // Handle traveler profile update logic here (if needed)
-            // Add logic for updating traveler profile
+          console.log(_id)
+
+
         } 
         else if (section === "guide") {
+            const { _id, parkingAreaDetails } = req.body;
             // Handle guide profile update logic here (if needed)
             // Add logic for updating guide profile
         } 
         else if (section === "parking-slot-owner") {
-            // Ensure parking owner exists
+
+
+            const { _id, parkingAreaDetails } = req.body;
+            console.log("In backed parking profile")
+            console.log(_id)
             const parkingOwnerDetails = await ParkingOwnerModel.findOne({ user_id: _id });
+            console.log("Parking owner details")
+            console.log(parkingOwnerDetails)
             if (!parkingOwnerDetails) {
                 return res.status(404).send({
                     message: "Parking Owner details not found",

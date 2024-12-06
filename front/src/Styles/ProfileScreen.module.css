@@ -1,0 +1,72 @@
+/* General styles */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .header {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .profileSection {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .parkingDetails {
+    margin-top: 20px;
+  }
+  
+  .parkingDetails p {
+    margin: 5px 0;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .buttonEdit {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .buttonSave {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .buttonCancel {
+    background-color: #dc3545;
+    color: white;
+  }
+  

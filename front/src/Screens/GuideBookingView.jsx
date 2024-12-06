@@ -18,8 +18,8 @@ function GuideBookingView() {
   };
 
   useEffect(() => {
-    fetchBookings(); // Fetch bookings on mount
-  }, []); // Empty dependency array to run only once on mount
+    fetchBookings(); 
+  }, []); 
 
   return (
     <div>
@@ -38,7 +38,7 @@ function GuideBookingView() {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
               }}
             >
-              {/* Display traveler details */}
+              
               <div>
                 <strong>Traveler Details:</strong>
                 <p>Name: {item.traveler.name}</p>

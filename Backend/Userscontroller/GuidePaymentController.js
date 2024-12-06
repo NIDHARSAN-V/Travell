@@ -29,7 +29,7 @@ const book_guide = async function(req, res) {
                     console.log("In  loop :" ,traveler_details )
 
 
-                    console.log(traveler_details);
+                    // console.log(traveler_details);
                     payment_data.push({
                         traveler: {
                             name: traveler_details.name,

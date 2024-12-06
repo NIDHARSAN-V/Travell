@@ -8,15 +8,16 @@ const Add_parking_payment = async function(req, res) {
     try {
         console.log("Parking Payment processing...");
         console.log("------------------------------------------------------------");
-        console.log(req.userid, req.section);
-
+        console.log(req.body)
+        const {section , userid} = req.body;
+        console.log(userid , section);
         // Validate userid and section
-        if (!req.userid || !req.section) {
+        if (!userid || !section) {
             return res.status(400).send("User ID and section are required");
         }
 
         // Find user by ID
-        const user = await userModel.findById(req.userid);
+        const user = await userModel.findById(userid);
         if (!user) {
             return res.status(404).send("User not found");
         }
@@ -24,7 +25,7 @@ const Add_parking_payment = async function(req, res) {
         // Initialize traveler variable outside of the if block
         let traveler = null;
         
-        if (req.section === "traveler") {
+        if (section === "traveler") {
             traveler = await TravelerModel.findOne({ user_id: req.userid });
             if (!traveler) {
                 return res.status(404).send("Traveler not found");
