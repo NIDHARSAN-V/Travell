@@ -42,7 +42,7 @@ app.use("/guide", GuideRouter)
 
 app.get("/", authmiddle, async (req, res) => {
     try {
-        console.log("Home back");
+        // console.log("Home back");
         res.status(200).send({
             message: "Entered Home Success",
             success: true,
